@@ -38,7 +38,7 @@ public class CategoryService {
     public List<CategoryData> getSubCategories(UUID categoryId) {
         Locale locale = getLocale();
 
-        List<Category> subCategories = categoryRepository.findByParentCategoryId(categoryId);
+        List<Category> subCategories = categoryRepository.findByParent_CategoryId(categoryId);
 
         return subCategories
                 .stream()

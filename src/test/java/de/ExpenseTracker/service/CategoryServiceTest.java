@@ -63,7 +63,7 @@ public class CategoryServiceTest {
 
         List<Category> childCategories = List.of(child1, child2);
 
-        when(categoryRepository.findByParentCategoryId(main1.getCategoryId())).thenReturn(childCategories);
+        when(categoryRepository.findByParent_CategoryId(main1.getCategoryId())).thenReturn(childCategories);
         when(messageSource.getMessage("child one", null, locale)).thenReturn("Child eins");
         when(messageSource.getMessage("child two", null, locale)).thenReturn("Child zwei");
 
@@ -86,7 +86,7 @@ public class CategoryServiceTest {
     @Test
     void shouldReturnEmptyListForSingleCategories() {
         Category main1 = createMainCategory("main one");
-        when(categoryRepository.findByParentCategoryId(main1.getCategoryId())).thenReturn(Collections.emptyList());
+        when(categoryRepository.findByParent_CategoryId(main1.getCategoryId())).thenReturn(Collections.emptyList());
 
         List<CategoryData> result = categoryService.getSubCategories(main1.getCategoryId());
 
