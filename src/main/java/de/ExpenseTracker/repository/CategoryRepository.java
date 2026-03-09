@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, UUID> {
     List<Category> findByParentIsNull(); // Top level categories
-    List<Category> findByParentCategoryId(UUID categoryId); // get subcategories for specific main category
+    List<Category> findByParent_CategoryId(UUID categoryId); // get subcategories for specific main category
 }

@@ -37,7 +37,7 @@ public class CategoryRepositoryTest {
         Category parent = categoryRepository.save(createMainCategory());
         categoryRepository.save(createChildCategory(parent));
 
-        List<Category> categories = categoryRepository.findByParentCategoryId(parent.getCategoryId());
+        List<Category> categories = categoryRepository.findByParent_CategoryId(parent.getCategoryId());
         assertEquals(1, categories.size());
     }
 
