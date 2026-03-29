@@ -2,7 +2,7 @@ FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /app
 
-COPY target/expensetracker.jar app.jar
+COPY *.jar app.jar
 
 EXPOSE 8080
 
