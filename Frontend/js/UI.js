@@ -1,12 +1,17 @@
+/**
+ * This is used for handling the events on the buttons, aswell as adding error messages or changing the UI based on user interaction.
+ */
 const errorMessage = document.querySelector(".error-message");
+const isRegisterPage = !!document.querySelector(".password-confirm");
 
 document.querySelector("form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const username = (document.querySelector(".username")).value;
   const password = (document.querySelector(".password")).value;
-  const passwordConfirm = (document.querySelector(".password-confirm")).value;
 
+  if (isRegisterPage) {
+  const passwordConfirm = document.querySelector(".password-confirm").value;
   const validation = validatePassword(password, passwordConfirm);
 
   if (!validation.valid) {
@@ -23,4 +28,16 @@ document.querySelector("form").addEventListener("submit", async function (e) {
 
   errorMessage.textContent = "";
   e.target.reset();
+  } else {
+    const result = await loginUser(username, password);
+
+    if (!result.success) {
+      errorMessage.textContent = result.message;
+      return;
+    }
+
+    console.log("geht?")
+    errorMessage.textContent = "";
+    // todo -> redirect
+  }
 });
