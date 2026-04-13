@@ -36,8 +36,7 @@ document.querySelector("form").addEventListener("submit", async function (e) {
       return;
     }
 
-    console.log("geht?")
     errorMessage.textContent = "";
-    // todo -> redirect
-  }
+    window.location.href = "dashboard.html";  
+  } 
 });

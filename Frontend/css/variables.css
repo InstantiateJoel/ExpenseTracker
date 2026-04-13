@@ -1,0 +1,13 @@
+:root {
+    /*colors*/
+    --main-bg-color: #e5e7eb;
+    --main-text-color: #111827;
+    --secondary-text-color: #4b5563;
+    --input-bg-color: #f3f4f6;
+    --input-focus-bg-color: #f3f4f6;
+    --primary-color: #6366f1;
+    --button-text-color: #ffffff;
+    --error-text-color: #ef4444;
+    --bg-card-color: rgba(245,245,250,0.95);
+    --card-shadow: 0 15px 50px rgba(0,0,0,0.1);
+}

@@ -7,25 +7,15 @@
 }
 
 body {
-    background: #e5e7eb; 
-    color: #111827; 
+    background: var(--main-bg-color);
+    color: var(--main-text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-/*Layout*/
-.auth-wrapper {
-    display: flex;
-    max-width: 900px;
-    width: 90%;
-    background-color: rgba(245,245,250,0.95);
-    border-radius: 20px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-}
-
-.auth-right {
+.auth {
     width: 400px;
     padding: 50px;
     background-color: #f9fafc; 
@@ -33,45 +23,39 @@ body {
     text-align: center;
 }
 
-.auth-left {
-    padding: 50px;
-    font-size: 18px;
-    color: #4b5563;
-}
-
-/*auth right elements*/
-.auth-right input:focus {
-    background-color: #f3f4f6; 
-    border: 1px solid #6366f1; 
-    outline: none;
-}
-
-.auth-right h2 {
+.auth h2 {
     font-size: 32px;
-    color: #111827;
+    color: var(--main-text-color)
 }
 
-.auth-right input {
+
+.auth input {
     margin: 30px auto;
     padding: 10px;
     display: block;
     width: 80%;
     height: 50px;
     border-radius: 30px;
-    background-color: #f3f4f6; 
+    background-color: var(--input-bg-color);
     text-align: center;
-    border: 1px solid #e5e7eb;
-    color: #111827;
+    border: 1px solid var(--main-bg-color);
+    color: var(--main-text-color);
     font-size: 16px;
     transition: 0.25s;
 }
 
-.auth-right input:hover {
+.auth input:focus {
+    background-color:  var(--input-focus-bg-color);
+    border: 1px solid var(--primary-color);
+    outline: none;
+}
+
+.auth input:hover {
     transform: scale(1.02);
     opacity: 0.95;
 }
 
-.auth-right button {
+.auth button {
     display: block;
     margin: 10px auto;
     width: 80%;
@@ -79,24 +63,40 @@ body {
     transition: 0.25s ease;
     height: 50px;
     border-radius: 30px;
-    background-color: #6366f1; 
-    color: #ffffff;
+    background-color: var(--primary-color); 
+    color: var(--button-text-color);
     border: none;
     font-size: 16px;
 }
 
-.auth-right button:hover {
+.auth button:hover {
     transform: scale(1.02);
-    background-color: #4f46e5; 
+    background-color: var(--primary-color); 
 }
 
 .error-message {
-    color: #ef4444;
+    color: var(--error-text-color);
     font-size: 0.9rem;
     margin-top: 5px;
 }
 
-/*auth left elements*/
+/*register only elements*/
+.auth-wrapper {
+    display: flex;
+    max-width: 900px;
+    width: 90%;
+    background-color: var(--bg-card-color);
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+}
+
+/*register auth left*/
+.auth-left {
+    padding: 50px;
+    font-size: 18px;
+    color: var(--secondary-text-color);
+}
+
 .auth-left ul {
     padding: 10px;
     list-style-type: none;
@@ -115,5 +115,5 @@ body {
 .auth-left h2 {
     font-size: 32px;
     text-align: center;
-    color: #111827;
+    color: var(--main-text-color);
 }

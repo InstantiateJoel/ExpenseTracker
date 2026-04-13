@@ -1,0 +1,23 @@
+/*reset*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+body {
+    background: #e5e7eb; 
+    color: #111827; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/*sidebar*/
+.sidebar {
+    width: 200px;
+    height: 200px;
+    background-color: blue;
+}
