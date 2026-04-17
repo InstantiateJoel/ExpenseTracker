@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -27,8 +28,8 @@ public class Expense {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private Instant createdAt;
+    @Column(name = "payment_date", updatable = false, nullable = false)
+    private LocalDate paymentDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

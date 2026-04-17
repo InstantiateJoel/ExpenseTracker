@@ -36,7 +36,7 @@ public class ExpenseService {
                 .category(category)
                 .amount(expenseData.getAmount())
                 .user(user)
-                .createdAt(Instant.now())
+                .paymentDate(expenseData.getPaymentDate())
                 .build();
 
         Expense saved = expenseRepository.save(expense);

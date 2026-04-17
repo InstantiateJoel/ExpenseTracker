@@ -40,7 +40,7 @@ CREATE TABLE app.expense (
 	category_id uuid NOT NULL,
 	amount numeric(7, 2) NOT NULL,
 	user_id uuid NOT NULL,
-	created_at timestamp DEFAULT now() NOT NULL,
+	payment_date date NOT NULL,
 	CONSTRAINT expense_amount_check CHECK ((amount > (0)::numeric)),
 	CONSTRAINT expense_pkey PRIMARY KEY (expenseid),
 	CONSTRAINT expense_category_id_fkey FOREIGN KEY (category_id) REFERENCES app.category(categoryid) ON DELETE RESTRICT,
