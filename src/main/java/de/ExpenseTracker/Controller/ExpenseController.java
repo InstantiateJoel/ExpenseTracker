@@ -14,22 +14,12 @@ import java.util.List;
 public class ExpenseController {
     private final ExpenseService expenseService;
 
-    /**
-     * Creates a new Expense for a given user
-     *
-     * @param expenseData DTO containing category, amount, description
-     * @return returns the Expense DTO
-     */
+
     @PostMapping
     public ExpenseData createExpense(@Valid @RequestBody ExpenseData expenseData) {
         return expenseService.createNewExpense(expenseData);
     }
 
-    /**
-     * Retrieves all expenses for a given user
-     *
-     * @return List of Expense DTOs for all expenses created by this user
-     */
     @GetMapping
     public List<ExpenseData> getUserExpenses() {
         return expenseService.getExpensesForCurrentUser();

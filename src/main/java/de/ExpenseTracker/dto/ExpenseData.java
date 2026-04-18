@@ -23,7 +23,6 @@ public class ExpenseData {
     @Size(max = 255)
     private String description;
 
-    @Positive
     @NotNull
     private LocalDate paymentDate;
 }
