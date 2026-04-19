@@ -16,11 +16,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
+import static de.ExpenseTracker.TestDataFactory.createExpenseData;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -60,7 +59,8 @@ public class ExpenseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.category").value(expenseData.getCategory().toString()))
                 .andExpect(jsonPath("$.amount").value(expenseData.getAmount()))
-                .andExpect(jsonPath("$.description").value(expenseData.getDescription()));
+                .andExpect(jsonPath("$.description").value(expenseData.getDescription()))
+                .andExpect(jsonPath("$.paymentDate").value(expenseData.getPaymentDate().toString()));
     }
 
     // negative
@@ -101,14 +101,5 @@ public class ExpenseControllerTest {
                 .andExpect(jsonPath("$[0].category").value(expenseData.getCategory().toString()))
                 .andExpect(jsonPath("$[0].amount").value(12.4))
                 .andExpect(jsonPath("$[0].description").value("description"));
-    }
-
-    // helper methods
-    private ExpenseData createExpenseData() {
-        return ExpenseData.builder()
-                .category(UUID.randomUUID())
-                .amount(BigDecimal.valueOf(12.40))
-                .description("description")
-                .build();
     }
 }

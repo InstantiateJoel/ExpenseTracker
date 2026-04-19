@@ -6,12 +6,12 @@ import de.ExpenseTracker.model.Users;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ExpenseRepositoryTest {
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -61,7 +60,7 @@ public class ExpenseRepositoryTest {
                 .expenseId(UUID.randomUUID())
                 .description("This is a description")
                 .amount(BigDecimal.valueOf(12.20))
-                .createdAt(Instant.now())
+                .paymentDate(LocalDate.now())
                 .user(savedUser)
                 .category(savedCategory)
                 .build();
@@ -89,7 +88,7 @@ public class ExpenseRepositoryTest {
         assertThat(expense).hasSize(1);
         assertThat(expense.getFirst().getDescription()).isEqualTo("This is a description");
         assertThat(expense.getFirst().getAmount()).isEqualTo(BigDecimal.valueOf(12.20));
-        assertThat(expense.getFirst().getCreatedAt()).isNotNull();
+        assertThat(expense.getFirst().getPaymentDate()).isNotNull();
         assertThat(expense.getFirst().getUser().getUserid()).isEqualTo(savedUser.getUserid());
         assertThat(expense.getFirst().getCategory().getCategoryId()).isEqualTo(savedCategory.getCategoryId());
     }
