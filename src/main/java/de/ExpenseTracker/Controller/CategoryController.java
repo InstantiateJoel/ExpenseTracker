@@ -33,7 +33,7 @@ public class CategoryController {
      * @param parentId UUID of the main category
      * @return List of category DTOs that are the children of a main category
      */
-    @GetMapping("/{parentId}/subcategories")
+    @GetMapping("/{parentId}/sub")
     public List<CategoryData> getSubCategories(@PathVariable UUID parentId) {
         return categoryService.getSubCategories(parentId);
     }
