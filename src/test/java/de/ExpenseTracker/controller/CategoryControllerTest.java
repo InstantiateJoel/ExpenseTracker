@@ -50,7 +50,7 @@ public class CategoryControllerTest {
 
         when(categoryService.getSubCategories(parent)).thenReturn(categoryDataList);
 
-        mockMvc.perform(get("/categories/{parent}/subcategories", parent))
+        mockMvc.perform(get("/categories/{parent}/sub", parent))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].categoryId").value(categoryDataList.getFirst().getCategoryId().toString()))
                 .andExpect(jsonPath("$[0].localizedName").value("CategoryMain"));
@@ -63,7 +63,7 @@ public class CategoryControllerTest {
 
         when (categoryService.getSubCategories(parent)).thenReturn(List.of());
 
-        mockMvc.perform(get("/categories/{parent}/subcategories", parent))
+        mockMvc.perform(get("/categories/{parent}/sub", parent))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isEmpty());
     }
