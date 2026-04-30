@@ -36,6 +36,8 @@ document.querySelector("form").addEventListener("submit", async function (e) {
       return;
     }
 
+    localStorage.setItem("username", username);
+
     errorMessage.textContent = "";
     window.location.href = "dashboard.html";  
   } 

@@ -5,7 +5,6 @@
  * @param { string } passwordConfirm - The user's password confirmation 
  * @returns { object } - Returns an object indicating whether the passwrods match. If unsuccessful, an error description is included.
  */
-
 function validatePassword(password, passwordConfirm) {
     if (password !== passwordConfirm) {
         return {

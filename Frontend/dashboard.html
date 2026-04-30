@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <title>Dashboard | Expensetracker</title>
-    <h1></h1>
 </head>
 <body>
-    <div class="sidebar">
+    <div class="heading">
+        <h2>Hello, </h2>
+        <h9>Take a look at your expenses</h9>
     </div>
-    
+
+    <div class="chart">
+        <canvas id="circleChart"></canvas>
+    </div>
+    <!-- Chart.js Library-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- mein js script für die charts-->
+    <script src="js/charts.js"></script>
 </body>
-</html>
+</html>^
