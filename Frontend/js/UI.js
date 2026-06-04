@@ -1,5 +1,5 @@
 /**
- * This is used for handling the events on the buttons, aswell as adding error messages or changing the UI based on user interaction.
+ * This is used for handling the events on the buttons, as well as adding error messages or changing the UI based on user interaction.
  */
 const errorMessage = document.querySelector(".error-message");
 const isRegisterPage = !!document.querySelector(".password-confirm");
@@ -39,6 +39,6 @@ document.querySelector("form").addEventListener("submit", async function (e) {
     localStorage.setItem("username", username);
 
     errorMessage.textContent = "";
-    window.location.href = "dashboard.html";  
+    window.location.href = "expensetracker-dashboard-tmp.html"  
   } 
 });

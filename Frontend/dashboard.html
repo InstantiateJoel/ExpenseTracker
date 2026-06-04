@@ -1,24 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <title>Dashboard | Expensetracker</title>
-</head>
-<body>
-    <div class="heading">
-        <h2>Hello, </h2>
-        <h9>Take a look at your expenses</h9>
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <div class="grid-container">
+      <header class="header">
+        <h1>Welcome!</h1>
+        <p>Take a look at your expenses and income.</p>
+      </header>
 
-    <div class="chart">
-        <canvas id="circleChart"></canvas>
+      <div class="actions">
+        <button class="redirect">Entry</button>
+      </div>
+
+      <div class="view-toggle">
+        <button id="show-expenses">Expenses</button>
+        <button id="show-income">Income</button>
+      </div>
+
+      <div id="transaction-list">
+      </div>
     </div>
-    <!-- Chart.js Library-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- mein js script für die charts-->
-    <script src="js/charts.js"></script>
-</body>
-</html>^
+  </body>
+</html>
+
+<!--div class="expense-card">
+          <div class="top">
+            <div>Category</div>
+            <div>24,50€ (price)</div>
+          </div>
+
+          <div class="meta">2026-05-02(date)</div>
+
+          <div class="description">hidden</div>
+        </div>
+        these are how it should work!-->

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entry</title>
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/entry.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>New Transaction</h1>
+        <p>Expense or income entry</p>
+      </header>
+      
+      <div class="actions">
+      <button class="redirect">Dashboard</button>
+      </div>
+
+      <form class="expense-form">
+        <h2 class="form-title">Expense</h2>
+        <select id="main-category" name="main-category" required>
+          <option value="" disabled selected>Select main category</option>
+        </select>
+        <select id="sub-category" name="sub-category" required>
+          <option value="" disabled selected>Select sub category</option>
+        </select>
+        <input type="number" placeholder="Amount" required />
+        <input type="text" placeholder="Description" />
+        <input class="full" type="date" placeholder="Payment date" required />
+        <button id="add-expense" type="submit">Add new expense</button>
+        <!--- to ensure that the placeholder works i will have to change it to text
+            and then with js (when focused) change it to date!-->
+      </form>
+
+      <form class="expense-form">
+        <div class="card-heading full">
+          <h2>Income</h2>
+        </div>
+        <input type="text" placeholder="Title" required />
+        <input type="number" placeholder="Amount" />
+        <input class="full" type="date" placeholder="payment date" required />
+        <button id="add-expense" type="submit">Add new income</button>
+        <!--- to ensure that the placeholder works i will have to change it to text
+            and then with js (when focused) change it to date!-->
+      </form>
+    </div>
+  </body>
+</html>

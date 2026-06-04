@@ -1,0 +1,15 @@
+1. Backend/DB umbauen:
+Statt instant.now speichern beim insert von nem record, bau ichs um,
+dass man n date picker hat, wann eine ausgabe ist, um das Datum zu 
+speichern.
+2. Möglichkeit, dass man wie bei der Bank "Daueraufträge" setzt, z.b Miete,
+
+
+
+
+
+was zur doku:
+
+anschauen, wie ich die tests "gefixt" hab bzw wie ich das mit dne
+properties jetzt zum laufen gebracht hab, dass ich nirgends das ganze zeug immer setzen muss
+per hand
