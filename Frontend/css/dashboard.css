@@ -35,8 +35,8 @@ body {
 }
 
 .actions {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .redirect {
@@ -90,12 +90,11 @@ body {
 
 
 #transaction-list {
-    display: none;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    background-color: var(--second-bg-color);
-    border-radius: 20px;
     padding: 1rem;
-    box-shadow: var(--main-box-shadow);
+    gap: 10px;
 }
 
 .top,
@@ -108,6 +107,8 @@ body {
 
 .expense-card,
 .income-card {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--divider-color);;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: var(--main-box-shadow);
 }

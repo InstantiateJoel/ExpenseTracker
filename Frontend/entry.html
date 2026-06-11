@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Entry</title>
+    <link rel="icon" href="favicon.png">
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/entry.css" />
   </head>
@@ -13,9 +14,9 @@
         <h1>New Transaction</h1>
         <p>Expense or income entry</p>
       </header>
-      
+
       <div class="actions">
-      <button class="redirect">Dashboard</button>
+        <button class="redirect">Dashboard</button>
       </div>
 
       <form class="expense-form">
@@ -26,25 +27,30 @@
         <select id="sub-category" name="sub-category" required>
           <option value="" disabled selected>Select sub category</option>
         </select>
-        <input type="number" placeholder="Amount" required />
-        <input type="text" placeholder="Description" />
-        <input class="full" type="date" placeholder="Payment date" required />
+        <input id="amount" type="number" placeholder="Amount" required />
+        <input id="description" type="text" placeholder="Description" />
+        <input id="payment-date" class="full" type="date" placeholder="Payment date" required />
         <button id="add-expense" type="submit">Add new expense</button>
         <!--- to ensure that the placeholder works i will have to change it to text
             and then with js (when focused) change it to date!-->
       </form>
 
-      <form class="expense-form">
+      <form class="income-form">
         <div class="card-heading full">
           <h2>Income</h2>
         </div>
-        <input type="text" placeholder="Title" required />
-        <input type="number" placeholder="Amount" />
-        <input class="full" type="date" placeholder="payment date" required />
-        <button id="add-expense" type="submit">Add new income</button>
+        <input id="income-title" type="text" placeholder="Title" required />
+        <input id="income-amount" type="number" placeholder="Amount" />
+        <input id="income-date" class="full" type="date" placeholder="payment date" required />
+        <button id="add-income" type="submit">Add new income</button>
         <!--- to ensure that the placeholder works i will have to change it to text
             and then with js (when focused) change it to date!-->
       </form>
     </div>
+<script src="js/config.local.js"></script>
+<script src="js/init.js"></script>
+<script src="js/UI.js"></script>
+<script src="js/api.js"></script>
+<script src="js/entry.js"></script>
   </body>
 </html>
