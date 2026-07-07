@@ -1,0 +1,73 @@
+{
+  "auth": {
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign in"
+    },
+    "register": {
+      "title": "Register",
+      "username": "Username",
+      "password": "Password",
+      "passwordConfirm": "Confirm password",
+      "submit": "Register"
+    }
+  },
+  "entry": {
+    "header": {
+      "title": "New Transaction",
+      "description": "Create new income or expense entry"
+    },
+    "expense": {
+      "form": {
+        "title": "Expense",
+        "mainCategoryPlaceholder": "Main category",
+        "subCategoryPlaceholder": "Sub category",
+        "amount": "Amount",
+        "description": "Description",
+        "submit": "Add new expense"
+      }
+    },
+    "income": {
+      "form": {
+        "title": "Income",
+        "incomeTitle": "Title",
+        "amount": "Amount",
+        "submit": "Add new income"
+      }
+    }
+  },
+  "dashboard": {
+    "header": {
+      "title": "Welcome!",
+      "description": "Take a look at your expenses and incomes."
+    }
+  },
+  "ui": {
+    "language": {
+      "toggle": "Change language"
+    },
+    "actions": {
+      "delete": "Delete",
+      "update": "Update"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
+      "entry": "Entry",
+      "showExpenses": "Expenses",
+      "showIncomes": "Income"
+    }
+  },
+  "errors": {
+    "USER_NOT_FOUND": "User not found.",
+    "USER_EXISTS": "Username already exists.",
+    "PASSWORD_MISMATCH": "Passwords do not match.",
+    "CATEGORY_NOT_FOUND": "Category not found.",
+    "INVALID_CREDENTIALS": "Invalid username or password.",
+    "network": "Network error.",
+    "PASSWORD_LENGTH": "Password length must be at least 8 characters and at most 32 characters.",
+    "USERNAME_LENGTH": "Username must be at least 3 and at most 20 characters long.",
+    "genericMessage": "Something went wrong."
+  }
+}

@@ -8,6 +8,8 @@ import de.ExpenseTracker.exceptions.UserNotFoundException;
 import de.ExpenseTracker.model.Users;
 import de.ExpenseTracker.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     /**
      * Registers a new User
@@ -47,7 +50,18 @@ public class UserService {
                 .createdAt(Instant.now())
                 .build();
 
-        return userRepository.save(user);
+
+        Users savedUser = userRepository.save(user);
+
+       Authentication authentication = authenticationManager.authenticate(
+               new UsernamePasswordAuthenticationToken(
+                       registerUserData.getUsername(),
+                       registerUserData.getPassword()
+               )
+       );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return savedUser;
     }
 
     /**

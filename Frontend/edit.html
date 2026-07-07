@@ -3,24 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Entry</title>
+    <title>Edit</title>
     <link rel="icon" href="favicon.png" />
     <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/entry.css" />
+    <link rel="stylesheet" href="css/edit.css" />
   </head>
   <body>
-    <div class="container">
-      <header class="header">
-        <h1 data-i18n="entry.header.title"></h1>
-        <p data-i18n="entry.header.description"></p>
-      </header>
-
-      <div class="actions">
-        <button class="redirect" data-i18n="ui.navigation.dashboard"></button>
-      </div>
-
-      <form class="expense-form">
-        <h2 class="form-title" data-i18n="entry.expense.form.title"></h2>
+    <form>
+      <div class="expense-section">
         <select id="main-category" name="mainCategory" required>
           <option
             value=""
@@ -50,43 +40,53 @@
           name="description"
           data-i18n-placeholder="entry.expense.form.description"
         />
-        <input id="payment-date" class="full" type="date" name="paymentDate" required />
+        <input
+          id="payment-date"
+          class="full"
+          type="date"
+          name="paymentDate"
+          required
+        />
         <button
-          id="add-expense"
+          id="update-expense"
           type="submit"
-          data-i18n="entry.expense.form.submit"
+          data-i18n="edit.expense.form.submit"
         ></button>
-      </form>
-
-      <form class="income-form">
-        <div class="card-heading full">
-          <h2 data-i18n="entry.income.form.title"></h2>
-        </div>
+      </div>
+      <div class="income-section">
         <input
           id="income-title"
           type="text"
           required
           data-i18n-placeholder="entry.income.form.incomeTitle"
+          name="title"
         />
         <input
           id="income-amount"
           type="number"
           required
           data-i18n-placeholder="entry.income.form.amount"
+          name="amount"
         />
-        <input id="income-date" class="full" type="date" required />
+        <input
+          id="income-date"
+          class="full"
+          type="date"
+          name="incomeDate"
+          required
+        />
         <button
-          id="add-income"
+          id="update-income"
           type="submit"
-          data-i18n="entry.income.form.submit"
+          data-i18n="edit.income.form.submit"
         ></button>
-      </form>
-    </div>
+      </div>
+    </form>
     <script src="js/config.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/init.js"></script>
-    <script src="js/api.js"></script>
     <script src="js/UI.js"></script>
-    <script src="js/entry.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/edit.js"></script>
   </body>
 </html>

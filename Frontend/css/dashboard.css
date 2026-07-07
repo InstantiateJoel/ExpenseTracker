@@ -97,12 +97,42 @@ body {
     gap: 10px;
 }
 
+#transaction-list .expense-card .description,
+#transaction-list .expense-card .actions ,
+#transaction-list .income-card .actions {
+    display: none;
+}
+
+#transaction-list .expense-card.open .description,
+#transaction-list .expense-card.open .actions,
+#transaction-list .income-card.open .actions{
+    display: block;
+}
+
+.expense-card.open,
+.income-card.open {
+    outline: 1px solid var(--primary-color);
+    border-radius: 12px;
+}
+
+#transaction-list .expense-card .actions button,
+#transaction-list .income-card .actions button {
+    margin: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+    cursor: pointer;
+}
+
 .top,
 .meta,
 .description {
     display: flex;
     justify-content: space-between;
     padding: 4px 4px;
+    word-break: break-word;
 }
 
 .expense-card,
@@ -111,4 +141,10 @@ body {
     border-radius: 12px;
     padding: 1rem;
     box-shadow: var(--main-box-shadow);
+}
+
+@media (min-width: 1024px) {
+    body {
+        padding-top: 3rem;
+    }
 }

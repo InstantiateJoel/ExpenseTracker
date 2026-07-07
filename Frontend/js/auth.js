@@ -46,7 +46,7 @@ async function handleLogin(username, password) {
 function finishAuth(username) {
   localStorage.setItem("username", username);
   showErrorMessage("");
-  window.location.href = "entry.html"
+  window.location.replace("login.html");
 }
 
 /**

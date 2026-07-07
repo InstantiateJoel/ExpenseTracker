@@ -32,12 +32,8 @@ public class UserController {
         userService.register(registerUserData);
 
         return ResponseData.builder()
-                .messageKey(messageSource.getMessage("USER.CREATED", null, getLocale()))
+                .messageKey("USER_CREATED")
                 .username(registerUserData.getUsername())
                 .build();
-    }
-
-    private Locale getLocale() {
-        return LocaleContextHolder.getLocale();
     }
 }

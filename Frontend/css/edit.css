@@ -20,32 +20,13 @@ body {
     color: var(--main-text-color);
 }
 
-.container {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.expense-section,
+.income-section {
+    display: none;
 }
 
-.header {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.header h1 {
-    text-align: center;
-    font-size: var(--main-heading-size);
-}
-
-.header p {
-    text-align: center;
-}
-
-.expense-form,
-.income-form {
+.expense-section.open,
+.income-section.open {
     background-color: var(--second-bg-color);
     border-radius: 20px;
     padding: 1rem;
@@ -57,14 +38,10 @@ body {
     margin-bottom: 0;
 }
 
-.card-heading h2 {
-    text-align: center;
-}
-
-.expense-form select,
-.income-form select,
-.expense-form input,
-.income-form input {
+.expense-section select,
+.income-section select,
+.expense-section input,
+.income-section input {
     width: 100%;
     height: 30px;
 
@@ -77,34 +54,34 @@ body {
     transition: 0.25s;
 }
 
-.expense-form input:focus,
-.income-form input:focus {
+.expense-section input:focus,
+.income-section input:focus {
     background-color: var(--input--focus-bg-color);
     border: 1px solid var(--primary-color);
     outline: none;
 }
 
-.expense-form input:hover,
-.income-form input:hover {
+.expense-section input:hover,
+.income-section input:hover {
     transform: scale(1.01);
     opacity: 0.95;
 }
 
-.expense-form select:focus,
-.income-form select:focus {
+.expense-section select:focus,
+.income-section select:focus {
     background-color: var(--input--focus-bg-color);
     border: 1px solid var(--primary-color);
     outline: none;
 }
 
-.expense-form select:hover,
-.income-form select:hover {
+.expense-section select:hover,
+.income-section select:hover {
     transform: scale(1.01);
     opacity: 0.95;
 }
 
-.expense-form button,
-.income-form button {
+.expense-section button,
+.income-section button {
     width: 100%;
     height: 30px;
     font-size: var(--main-font-size);
@@ -117,8 +94,8 @@ body {
     grid-column: 1 / -1;
 }
 
-.expense-form button:hover,
-.income-form button:hover {
+.expense-section button:hover,
+.income-section button:hover {
     transform: scale(1.02);
     background-color: var(--primary-color);
 }
@@ -127,37 +104,9 @@ body {
     grid-column: 1 / -1;
 }
 
-.form-title {
-    text-align: center;
-    grid-column: 1 / -1;
-}
-
-.redirect {
-    width: 100%;
-    height: 30px;
-    font-size: var(--main-font-size);
-    background-color: var(--primary-color);
-    color: var(--button-text-color);
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-.redirect:hover {
-    transform: scale(1.02);
-    background-color: var(--primary-color);
-}
-
-.actions {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-}
-
 @media (min-width: 1024px) {
     body {
-        align-items: flex-start;
+        align-items: center;
         padding-top: 3rem;
     }
 }

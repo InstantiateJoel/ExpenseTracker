@@ -20,6 +20,7 @@ body {
 }
 
 .auth {
+    position: relative;
     width: 100%;
     max-width: 420px;
     padding: 50px;
@@ -83,6 +84,22 @@ body {
     margin-top: 4px;
 }
 
+.lang-switch {
+    background: transparent;
+    color: var(--main-text-color);
+    border: none;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+.lang-switch:hover {
+    opacity: 1;
+    transform: none;
+}
+
 @media (min-width: 1024px) {
     .auth {
         max-width: 460px;
@@ -92,12 +109,5 @@ body {
 
     .auth h2 {
         font-size: 48px;
-    }
-}
-
-@media (min-width: 1440px) {
-    .auth {
-        max-width: 500px;
-        padding: 68px;
     }
 }

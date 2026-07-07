@@ -7,15 +7,14 @@ import lombok.Data;
 @Data
 public class RegisterUserData {
 
-    @NotBlank()
-    @Size(min = 3, max = 20)
+    @NotBlank
+    @Size(min = 3, max = 20, message = "USERNAME:LENGTH")
     private String username;
 
-    @NotBlank()
-    @Size(min = 8, max = 32)
+    @NotBlank
+    @Size(min = 8, max = 32, message="PASSWORD_LENGTH")
     private String password;
 
-    @NotBlank()
-    @Size(min = 8, max = 32)
+    @NotBlank
     private String passwordConfirm;
 }

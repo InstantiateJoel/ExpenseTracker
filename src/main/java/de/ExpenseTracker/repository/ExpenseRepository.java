@@ -5,10 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
     List<Expense> findByUser_Userid(UUID userid);
     List<Expense> findByUser_UseridAndCategory_CategoryId(UUID userid, UUID categoryId);
+    Optional<Expense> findByUser_UseridAndExpenseId(UUID userid, UUID expenseId);
+    void deleteByUser_UseridAndExpenseId(UUID userId, UUID expenseId);
 }

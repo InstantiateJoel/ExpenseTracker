@@ -2,15 +2,13 @@ package de.ExpenseTracker.exceptions;
 
 import de.ExpenseTracker.dto.ResponseData;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.Locale;
 
 /**
  * Central exception handler for the application
@@ -50,12 +48,6 @@ public class GlobalExceptionHandler {
         return toResponseData(e);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseData handleCategoryNotFoundException(CategoryNotFoundException e) {
-        return toResponseData(e);
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseData handleValidation(MethodArgumentNotValidException e) {
@@ -69,14 +61,25 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    private ResponseData toResponseData(RuntimeException e) {
-        Locale locale = getLocale();
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseData handleCategoryNotFoundException(CategoryNotFoundException e) {
         return ResponseData.builder()
-                .messageKey(messageSource.getMessage(e.getMessage(), null, locale))
+                .messageKey(e.getMessage())
                 .build();
     }
 
-    private Locale getLocale() {
-        return LocaleContextHolder.getLocale();
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ExpenseNotFoundException.class)
+    public ResponseData handleExpenseNotFoundException(ExpenseNotFoundException e) {
+        return ResponseData.builder()
+                .messageKey(e.getMessage())
+                .build();
+    }
+
+    private ResponseData toResponseData(RuntimeException e) {
+        return ResponseData.builder()
+                .messageKey(e.getMessage())
+                .build();
     }
 }

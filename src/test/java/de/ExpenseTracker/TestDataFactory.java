@@ -30,6 +30,7 @@ public class TestDataFactory {
 
     public static ExpenseData createExpenseData() {
         return ExpenseData.builder()
+                .expenseId(UUID.randomUUID())
                 .category(UUID.randomUUID())
                 .amount(BigDecimal.valueOf(12.40))
                 .description("description")
@@ -39,6 +40,7 @@ public class TestDataFactory {
 
     public static IncomeData createIncomeData() {
         return IncomeData.builder()
+                .incomeId(UUID.randomUUID())
                 .title("IncomeTitle")
                 .amount(BigDecimal.valueOf(20.20))
                 .incomeDate(LocalDate.now())

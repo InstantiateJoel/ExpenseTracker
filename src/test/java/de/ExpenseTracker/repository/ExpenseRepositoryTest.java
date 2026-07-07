@@ -31,12 +31,13 @@ public class ExpenseRepositoryTest {
 
     private Users savedUser;
     private Category savedCategory;
+    private Expense savedExpense;
 
     @BeforeEach
     void setUp() {
         savedUser = userRepository.save(createUser());
         savedCategory = categoryRepository.save(createCategory());
-        expenseRepository.save(createExpense());
+        savedExpense = expenseRepository.save(createExpense());
     }
 
 
@@ -52,6 +53,15 @@ public class ExpenseRepositoryTest {
         List<Expense> expense = expenseRepository.findByUser_UseridAndCategory_CategoryId(savedUser.getUserid(), savedCategory.getCategoryId());
 
         assertExpense(expense);
+    }
+
+    @Test
+    void testShouldDeleteExpense() {
+        expenseRepository.deleteByUser_UseridAndExpenseId(savedUser.getUserid(), savedExpense.getExpenseId());
+
+        List<Expense> remaining = expenseRepository.findByUser_Userid(savedUser.getUserid());
+
+        assertThat(remaining.isEmpty());
     }
 
     // helper methods

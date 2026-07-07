@@ -59,7 +59,7 @@ public class UserControllerTest {
                         .content(objectMapper.writeValueAsString(createRegisterUserData())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("testuser"))
-                .andExpect(jsonPath("$.messageKey").value("User created successfully! You can log in now!"));
+                .andExpect(jsonPath("$.messageKey").value("USER_CREATED"));
     }
 
     // negative
@@ -71,7 +71,7 @@ public class UserControllerTest {
                 .register(any());
 
         Mockito.when(messageSource.getMessage(
-                        eq(ErrorCode.USER_EXISTS.getCode()),
+                        eq(ErrorCode.USER_EXISTS.name()),
                         any(),
                         any(Locale.class)))
                 .thenReturn("Username already exists! Please choose another one!");
@@ -81,14 +81,14 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createRegisterUserData())))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.messageKey").value("Username already exists! Please choose another one!"));
+                .andExpect(jsonPath("$.messageKey").value("USER_EXISTS"));
     }
 
     @Test
     @WithMockUser(username = "joel")
     void testShouldReturnBadRequestWhenPasswordsDoNotMatch() throws Exception {
         Mockito.when(messageSource.getMessage(
-                eq(ErrorCode.PASSWORD_MISMATCH.getCode()),
+                        eq(ErrorCode.PASSWORD_MISMATCH.name()),
                         any(),
                         any(Locale.class)))
                 .thenReturn("Passwords don't match!");
@@ -102,7 +102,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createRegisterUserData())))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.messageKey").value("Passwords don't match!"));
+                .andExpect(jsonPath("$.messageKey").value("PASSWORD_MISMATCH"));
     }
 
 

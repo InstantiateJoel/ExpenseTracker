@@ -1,7 +1,9 @@
 const incomeTabButton = document.getElementById("show-income");
 const expenseTabButton = document.getElementById("show-expenses");
-document.addEventListener("DOMContentLoaded", init);
-
+document.addEventListener("DOMContentLoaded", async () => {
+    await globalInit();
+    await loadExpenses();
+});
 
 incomeTabButton.addEventListener("click", loadIncomes);
 expenseTabButton.addEventListener("click", loadExpenses);

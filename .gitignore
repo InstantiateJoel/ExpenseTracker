@@ -4,11 +4,11 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 *.jar
+application-dev.properties
 
 ### STS ###
 .apt_generated
 .classpath
-.factorypath
 .project
 .settings
 .springBeans
@@ -36,3 +36,4 @@ build/
 ### Frontend ###
 doku hilfen
 Frontend/js/config.local.js
+src/main/resources/application-dev.properties

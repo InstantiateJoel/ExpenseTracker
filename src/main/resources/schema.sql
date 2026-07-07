@@ -23,7 +23,7 @@ CREATE TABLE app.users (
 
 CREATE TABLE app.category (
 	categoryid uuid DEFAULT gen_random_uuid() NOT NULL,
-	"name" varchar(100) NOT NULL,
+	name varchar(100) NOT NULL,
 	parent_id uuid NULL,
 	CONSTRAINT category_name_key UNIQUE (name),
 	CONSTRAINT category_pkey PRIMARY KEY (categoryid),
@@ -45,4 +45,19 @@ CREATE TABLE app.expense (
 	CONSTRAINT expense_pkey PRIMARY KEY (expenseid),
 	CONSTRAINT expense_category_id_fkey FOREIGN KEY (category_id) REFERENCES app.category(categoryid) ON DELETE RESTRICT,
 	CONSTRAINT expense_user_id_fkey FOREIGN KEY (user_id) REFERENCES app.users(userid) ON DELETE CASCADE
+);
+
+-- Drop table
+
+-- Drop TABLE app.expense
+
+CREATE TABLE app.income (
+    incomeid uuid DEFAULT gen_random_uuid() NOT NULL,
+    title varchar(255) NOT NULL,
+    amount numeric(38, 2) NOT NULL,
+    income_date date NOT NULL,
+    user_id uuid NOT NULL,
+    CONSTRAINT income_amount_check CHECK ((amount > (0)::numeric)),
+    CONSTRAINT income_pkey PRIMARY KEY (incomeid),
+    CONSTRAINT  income_user_id_fkey FOREIGN KEY (user_id) REFERENCES app.users(userid) ON DELETE CASCADE
 );

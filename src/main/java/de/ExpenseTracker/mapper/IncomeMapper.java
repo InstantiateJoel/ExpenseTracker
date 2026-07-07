@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class IncomeMapper {
     public IncomeData mapToDto(Income income) {
         return IncomeData.builder()
+                .incomeId(income.getIncomeId())
                 .title(income.getTitle())
                 .amount(income.getAmount())
                 .incomeDate(income.getIncomeDate())

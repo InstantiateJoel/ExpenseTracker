@@ -7,14 +7,16 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder
 public class IncomeData {
+    private UUID incomeId;
     @NotNull
     private String title;
 
-    @Positive
+    @Positive(message = "AMOUNT_POSITIVE")
     @NotNull
     private BigDecimal amount;
 

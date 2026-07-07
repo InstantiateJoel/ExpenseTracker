@@ -8,6 +8,7 @@ import de.ExpenseTracker.model.Category;
 import de.ExpenseTracker.model.Expense;
 import de.ExpenseTracker.model.Users;
 import de.ExpenseTracker.repository.ExpenseRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,14 +18,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import static de.ExpenseTracker.TestDataFactory.createCategory;
 import static de.ExpenseTracker.TestDataFactory.createUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceTest {
@@ -43,17 +44,33 @@ public class ExpenseServiceTest {
     @InjectMocks
     private ExpenseService expenseService;
 
+    private Users user;
+    private Category category;
+    private Expense expense;
+
+    @BeforeEach
+    void setUp() {
+        user = createUser();
+        category = createCategory();
+
+        expense = Expense.builder()
+            .expenseId(UUID.randomUUID())
+            .category(category)
+            .description("This is a description")
+            .paymentDate(LocalDate.now())
+            .user(user)
+            .build();
+    }
+
     // create
     // positive
     @Test
     void shouldCreateNewExpense() {
-        Category category = createCategory();
-
         when(categoryService.getCategoryByIdOrThrow(category.getCategoryId()))
                 .thenReturn(category);
 
         when(userService.getCurrentUserFromSession())
-                .thenReturn(createUser());
+                .thenReturn(user);
 
         when(expenseRepository.save(any(Expense.class)))
                 .thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
@@ -92,15 +109,11 @@ public class ExpenseServiceTest {
     // get expenses by userid
     @Test
     void shouldReturnAllUserExpenses() {
-        Users user = createUser();
-        Expense expense1 = createExpense();
-        Expense expense2 = createExpense();
-
         when(userService.getCurrentUserFromSession())
                 .thenReturn(user);
 
         when(expenseRepository.findByUser_Userid(user.getUserid()))
-                .thenReturn(List.of(expense1, expense2));
+                .thenReturn(List.of(expense));
 
         when(expenseMapper.mapToDto(any(Expense.class)))
                 .thenAnswer(inv -> {
@@ -115,30 +128,105 @@ public class ExpenseServiceTest {
                 });
         List<ExpenseData> result = expenseService.getExpensesForCurrentUser();
 
-        assertEquals(2, result.size());
-        assertEquals(expense1.getDescription(), result.get(0).getDescription());
-        assertEquals(expense1.getCategory().getCategoryId(), result.get(0).getCategory());
-        assertEquals(expense2.getDescription(), result.get(1).getDescription());
-        assertEquals(expense2.getCategory().getCategoryId(), result.get(1).getCategory());
+        assertEquals(1, result.size());
+        ExpenseData dto = result.getFirst();
 
+        assertEquals(expense.getDescription(), dto.getDescription());
+        assertEquals(expense.getCategory().getCategoryId(), dto.getCategory());
+    }
+
+    @Test
+    void shouldDeleteExpense() {
+        when(userService.getCurrentUserFromSession())
+                .thenReturn(user);
+
+        doNothing().when(expenseRepository)
+                .deleteByUser_UseridAndExpenseId(user.getUserid(), expense.getExpenseId());
+
+        expenseService.deleteExpense(expense.getExpenseId());
+
+        verify(expenseRepository)
+                .deleteByUser_UseridAndExpenseId(user.getUserid(), expense.getExpenseId());
+    }
+
+    @Test
+    void shouldUpdateExpense() {
+        Category category = createCategory();
+
+        ExpenseData updateDto = ExpenseData.builder()
+                .category(category.getCategoryId())
+                .amount(BigDecimal.valueOf(99.99))
+                .description("Updated description")
+                .paymentDate(LocalDate.now().plusDays(1))
+                .build();
+
+        when(userService.getCurrentUserFromSession())
+                .thenReturn(user);
+
+        when(expenseRepository.findByUser_UseridAndExpenseId(user.getUserid(), expense.getExpenseId()))
+                .thenReturn(Optional.of(expense));
+
+        when(categoryService.getCategoryByIdOrThrow(category.getCategoryId()))
+                .thenReturn(category);
+
+        expenseService.updateExpense(expense.getExpenseId(), updateDto);
+
+        assertEquals(category, expense.getCategory());
+        assertEquals(BigDecimal.valueOf(99.99), expense.getAmount());
+        assertEquals("Updated description", expense.getDescription());
+        assertEquals(updateDto.getPaymentDate(), expense.getPaymentDate());
+
+        verify(expenseRepository)
+                .findByUser_UseridAndExpenseId(user.getUserid(), expense.getExpenseId());
+    }
+
+    @Test
+    void shouldReturnExpenseDetails() {
+        Expense expense = Expense.builder()
+                .expenseId(UUID.randomUUID())
+                .category(createCategory())
+                .description("Description")
+                .paymentDate(LocalDate.now())
+                .build();
+
+        ExpenseData expenseData = ExpenseData.builder()
+                .expenseId(expense.getExpenseId())
+                .category(expense.getCategory().getCategoryId())
+                .description(expense.getDescription())
+                .paymentDate(expense.getPaymentDate())
+                .build();
+
+        when(userService.getCurrentUserFromSession())
+                .thenReturn(user);
+
+        when(expenseRepository.findByUser_UseridAndExpenseId(user.getUserid(), expense.getExpenseId()))
+                .thenReturn(Optional.of(expense));
+
+        when(expenseMapper.mapToDto(expense))
+                .thenReturn(expenseData);
+
+        ExpenseData result = expenseService.getExpenseDetails(expense.getExpenseId());
+
+        assertEquals(expenseData.getExpenseId(), result.getExpenseId());
+        assertEquals(expenseData.getCategory(), result.getCategory());
+        assertEquals(expenseData.getAmount(), result.getAmount());
+        assertEquals(expense.getDescription(), result.getDescription());
+        assertEquals(expenseData.getPaymentDate(), result.getPaymentDate());
     }
 
     // helper methods
-    private Expense createExpense() {
-        return Expense.builder()
-                .expenseId(UUID.randomUUID())
-                .category(createCategory())
-                .description("This is a description")
-                .paymentDate(LocalDate.now())
-                .user(createUser())
-                .build();
-    }
-
     private ExpenseData createExpenseDto(UUID categoryId) {
         return ExpenseData.builder()
                 .category(categoryId)
                 .amount(BigDecimal.valueOf(42.0))
                 .description("Test expense")
+                .build();
+    }
+
+    private Category createCategory() {
+        return Category.builder()
+                .categoryId(UUID.randomUUID())
+                .name("Category")
                 .build();
     }
 }

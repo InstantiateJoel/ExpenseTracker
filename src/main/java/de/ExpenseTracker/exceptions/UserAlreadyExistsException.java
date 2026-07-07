@@ -6,6 +6,6 @@ package de.ExpenseTracker.exceptions;
  */
 public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(ErrorCode code) {
-        super(code.getCode());
+        super(code.name());
     }
 }

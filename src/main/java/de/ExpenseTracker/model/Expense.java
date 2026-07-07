@@ -27,7 +27,7 @@ public class Expense {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "payment_date", updatable = false, nullable = false)
+    @Column(name = "payment_date", nullable = false)
     private LocalDate paymentDate;
 
     @ManyToOne

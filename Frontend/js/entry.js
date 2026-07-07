@@ -8,12 +8,31 @@ const incomeAmountInput = document.getElementById("income-amount");
 const incomeDate = document.getElementById("income-date");
 const expenseForm = document.querySelector(".expense-form");
 const incomeForm = document.querySelector(".income-form");
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", async () => {
+    await globalInit();
+    await init();
+});
+
 expenseForm.addEventListener("submit", handleCreateExpense);
 incomeForm.addEventListener("submit", handleCreateIncome);
 
 if (selectMainCategory) {
     selectMainCategory.addEventListener("change", handleMainCategoryChange);
+}
+
+/**
+ * Initializes the page by loading main categories and rendering them
+ * 
+ * @returns { Promise<void> }
+ */
+async function init() {
+    const result = await getMainCategories();
+
+    if (!result.success) {
+        return;
+    }
+
+    renderMainCategories(result.data);
 }
 
 /**
@@ -41,10 +60,12 @@ async function handleMainCategoryChange(event) {
 
 /**
  * Resets the subcategory dropdown and pre selects the default option
- */
+*/
 function resetSubCategorySelect() {
     selectSubCategory.innerHTML = `
-    <option value="" disabled selected>Select sub category</option>`;
+    <option value="" disabled selected data-i18n="entry.expense.form.subCategoryPlaceholder"></option>`;
+
+    applyTranslations();
 }
 
 /**

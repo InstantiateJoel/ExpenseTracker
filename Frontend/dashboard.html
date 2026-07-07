@@ -11,25 +11,27 @@
   <body>
     <div class="grid-container">
       <header class="header">
-        <h1>Welcome!</h1>
-        <p>Take a look at your expenses and income.</p>
+        <h1 data-i18n="dashboard.header.title"></h1>
+        <p data-i18n="dashboard.header.description"></p>
       </header>
 
       <div class="actions">
-        <button class="redirect">Entry</button>
+        <button class="redirect" data-i18n="ui.navigation.entry"></button>
       </div>
 
       <div class="view-toggle">
-        <button id="show-expenses">Expenses</button>
-        <button id="show-income">Income</button>
+        <button id="show-expenses" data-i18n="ui.navigation.showExpenses"></button>
+        <button id="show-income" data-i18n="ui.navigation.showIncomes"></button>
       </div>
 
       <div id="transaction-list">
     </div>
-    <script src="js/config.local.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/init.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/UI.js"></script>
+    <script src="js/edit.js"></script>
     <script src="js/api.js"></script>
   </body>
 </html>

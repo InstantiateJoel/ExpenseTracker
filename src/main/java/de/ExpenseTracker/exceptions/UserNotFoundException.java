@@ -6,6 +6,6 @@ package de.ExpenseTracker.exceptions;
  */
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(ErrorCode code) {
-        super(code.getCode());
+        super(code.name());
     }
 }

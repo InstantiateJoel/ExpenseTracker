@@ -6,6 +6,6 @@ package de.ExpenseTracker.exceptions;
  */
 public class CategoryNotFoundException extends RuntimeException {
     public CategoryNotFoundException(ErrorCode code) {
-        super(code.getCode());
+        super(code.name());
     }
 }

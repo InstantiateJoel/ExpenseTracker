@@ -1,4 +1,3 @@
-// this is the config for the main docker-compose
 window.APP_CONFIG = {
-  API_URL: ""
+  API_URL: "http://localhost:8080"
 };

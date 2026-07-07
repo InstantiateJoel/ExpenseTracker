@@ -2,11 +2,23 @@ const form = document.querySelector("form");
 const usernameInput = document.querySelector(".username");
 const passwordInput = document.querySelector(".password");
 const passwordConfirmInput = document.querySelector(".password-confirm");
+const button = document.querySelector("#lang-toggle");
+form.addEventListener("submit", handleSubmit);
+document.addEventListener("DOMContentLoaded", globalInit);
 
 /**
- * When the user registers or login and clicks on the submit button
+ * If the button is clicked, it automatically sets the new language
  */
-form.addEventListener("submit", handleSubmit);
+if (button) {
+  button.addEventListener("click", async () => {
+    const newLang = currentLanguage === "de-DE" ? "en-US" : "de-DE";
+
+    setLanguage(newLang);
+
+    await loadTranslations();
+    applyTranslations();
+  });
+}
 
 /***
  * Handles form submissions for login and registration

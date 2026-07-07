@@ -53,6 +53,17 @@ public class CategoryService {
         return LocaleContextHolder.getLocale();
     }
 
+    public CategoryData getLocalizedCategory(UUID categoryId) {
+        Locale locale = getLocale();
+
+        Category category = getCategoryByIdOrThrow(categoryId);
+
+        return CategoryData.builder()
+                .categoryId(category.getCategoryId())
+                .localizedName(messageSource.getMessage(category.getName(), null, locale))
+                .build();
+    }
+
     /**
      * Retrieves a Category entity from the database by its UUID
      *

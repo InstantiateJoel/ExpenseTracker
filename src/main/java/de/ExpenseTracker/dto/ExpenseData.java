@@ -13,14 +13,20 @@ import java.util.UUID;
 @Data
 @Builder
 public class ExpenseData {
+    private UUID expenseId;
+
     @NotNull
     private UUID category;
 
+    private UUID mainCategory;
+
+    private String localizedName;
+
     @NotNull
-    @Positive
+    @Positive(message = "AMOUNT_POSITIVE")
     private BigDecimal amount;
 
-    @Size(max = 255)
+    @Size(max = 255, message = "DESCRIPTION_LENGTH")
     private String description;
 
     @NotNull

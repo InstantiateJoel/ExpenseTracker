@@ -1,15 +1,16 @@
-//const API_BASE = window.APP_CONFIG?.API_URL || "";
-
-const API_BASE = "http://192.168.178.44:8081";
+const API_BASE = window.APP_CONFIG?.API_URL || "";
 
 /**
- * Registers a new user via the API
+ * API call to register a new user
  * 
  * @async
  * @param { string } username
  * @param { string } password
  * @param { string } passwordConfirm 
- * @returns { Promise<object> }
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string
+ *  }> } - Result object indicating wether the register was successful
  */
 async function registerUser(username, password, passwordConfirm) {
     try {
@@ -33,15 +34,16 @@ async function registerUser(username, password, passwordConfirm) {
             };
         }
 
+        console.log(data.messageKey);
         return {
             success: false,
-            message: getErrorMessage(response, data, "Registration failed. Please try again.")
+            message: t(`errors.${data.messageKey}`)
         };
 
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         };
     }
 }
@@ -53,7 +55,10 @@ async function registerUser(username, password, passwordConfirm) {
  * @function loginUser
  * @param { string } username 
  * @param { string } password
- * @returns { Promise<object> } - 
+ * @returns { Promise<{
+ *  success: true,
+ *  message: string
+ *  }> } - Result object indicating wether the login was successful
  */
 async function loginUser(username, password) {
     try {
@@ -71,32 +76,48 @@ async function loginUser(username, password) {
 
         const data = await response.json().catch(() => null);
 
+        if (response.status === 401) {
+
+            return {
+                success: false,
+                message: t(`errors.${data.errorCode}`)
+            };
+        }
+
         if (response.ok) {
             return { success: true };
         }
 
+        console.log(response.status)
         return {
             success: false,
-            message: getErrorMessage(response, data, "Invalid username or password. Please try again.")
+            message: t(`errors.${data.errorCode}`)
         };
 
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         }
     }
 }
 
 /**
- * Retrieves all the main categories 
- * @returns { Promise<object> }
+ * API call to fetch all main categories
+ * @returns { Promise<{
+ *  success: boolean,
+ *  data: Category[]
+ *  message: string
+ *  }> } - Result object indicating whether the fetch was successful
  */
 async function getMainCategories() {
     try {
         const response = await fetch(`${API_BASE}/categories/main`, {
             method: "GET",
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                "Accept-Language": currentLanguage
+            }
         });
 
         const data = await response.json().catch(() => null);
@@ -110,30 +131,38 @@ async function getMainCategories() {
 
         return {
             success: false,
-            message: getErrorMessage(response, data, "Failed to load categories.")
+            message: t(`errors.${data.errorCode}`)
         };
 
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         }
     }
 }
 
 /**
- * Gets all the child categories for a main category the user choose
+ * API call to fetch all sub categories by a given main-categoryId
  * @param { string } categoryId
- * @returns { Promise<object> }
+ * @returns { Promise<{
+ *  success: boolean,
+ *  data: Category[],
+ *  message: string
+ *  }> } - Result object 
  */
 async function getSubCategories(categoryId) {
     try {
         const response = await fetch(`${API_BASE}/categories/${categoryId}/sub`, {
             method: "GET",
-            credentials: "include"
+            credentials: "include",
+            headers: {
+                "Accept-Language": currentLanguage
+            }
         });
 
         const data = await response.json().catch(() => null);
+
         if (response.ok) {
             return {
                 success: true,
@@ -143,13 +172,13 @@ async function getSubCategories(categoryId) {
 
         return {
             success: false,
-            message: getErrorMessage(response, data, "Failed to load categories")
+            message: t(`errors.${data.errorCode}`)
         };
 
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         }
     }
 }
@@ -161,11 +190,13 @@ async function getSubCategories(categoryId) {
  * @property { string } paymentDate
  * @property { string } description
  */
-
 /**
  * Creates a new expense
  * @param { Expense } expense
- * @returns { Promise<object> }
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string
+ *  >} } - Result object indicating whether the request was successful 
  */
 async function addNewExpense(expense) {
     try {
@@ -189,13 +220,13 @@ async function addNewExpense(expense) {
 
         return {
             success: false,
-            message: getErrorMessage(response, data, "Failed to add expense. Please try again.")
+            message: t(`errors.${data.errorCode}`)
         };
 
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         };
     }
 }
@@ -209,7 +240,10 @@ async function addNewExpense(expense) {
 /**
  * Creates a new income record and persists it in the database
  * @param { Income } income
- * @returns { Promise<object> }
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string 
+ *  }> } - Result object indicating whether the request was successful
  */
 async function addNewIncome(income) {
     try {
@@ -233,20 +267,23 @@ async function addNewIncome(income) {
 
         return {
             success: false,
-            message: getErrorMessage(response, data, "Failed to add income. Please try again.")
+            message: t(`errors.${data.errorCode}`)
         };
 
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         };
     }
 }
 
 /**
  * API Call that returns all expenses for the current user
- * @returns { Promise<object> }
+ * @returns { Promise<{
+    * success: boolean,
+    * message: string 
+    * }> } - Result object indicating whether the request was successful
  */
 async function getUserExpenses() {
     try {
@@ -266,21 +303,24 @@ async function getUserExpenses() {
 
         return {
             success: false,
-            message: getErrorMessage(response, data, "Failed to load expenses.")
+            message: t(`errors.${data.errorCode}`)
         };
 
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         };
     }
 }
 
 /**
  * API Call that returns all incomes for the current user
- * @returns { Promise<object> }
- */
+ * @returns { Promise<{
+*   success: boolean,
+*   message: string 
+*   }> } - Result object indicating whether the request was successful
+*/
 async function getUserIncomes() {
     try {
         const response = await fetch(`${API_BASE}/income`, {
@@ -289,6 +329,206 @@ async function getUserIncomes() {
         });
 
         const data = await response.json().catch(() => null);
+
+        if (response.ok) {
+            return {
+                success: true,
+                data: data
+            };
+        }
+        [message]
+        return {
+            success: false,
+            message: t(`errors.${data.errorCode}`)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: t("errors.network")
+        };
+    }
+}
+
+/**
+ * API call to delete a user expense
+ * @param { string } expenseId 
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string 
+ *  }>} Result object indicating wether the deletion was successful
+ */
+async function deleteExpense(expenseId) {
+    try {
+        const response = await fetch(`${API_BASE}/expense/${expenseId}`, {
+            method: "DELETE",
+            credentials: "include"
+        });
+
+        if (response.ok) {
+            return {
+                success: true
+            };
+        }
+
+        return {
+            success: false,
+            message: t(`errors.genericMessage`)
+        };
+
+    } catch (error) {
+        return {
+            success: false,
+            message: t(`errors.network`)
+        };
+    }
+}
+
+/**
+ * API call to delete user income
+ * @param { string } incomeId 
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string
+ *  }> } - Result object indicating whether the request was successful or not
+ */
+async function deleteIncome(incomeId) {
+    try {
+        const response = await fetch(`${API_BASE}/income/${incomeId}`, {
+            method: "DELETE",
+            credentials: "include"
+        });
+
+        if (response.ok) {
+            return {
+                success: true
+            };
+        }
+
+        return {
+            success: false,
+            message: t(`errors.genericMessage`)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: t(`errors.network`)
+        };
+    }
+}
+
+/**
+ * @typedef { Object } result
+ * @property { boolean } success - Indicates whether the request was successful or not
+ * @property  {string } [message] - Error message on failure
+ */
+/**
+ * 
+ * @param { string } expenseId 
+ * @param { Expense } expense - Object with all user changes
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string 
+ *  }> } - Result object indicting whether the request was successful or not
+ */
+async function updateExpense(expenseId, expense) {
+    try {
+        const response = await fetch(`${API_BASE}/expense/${expenseId}`, {
+            method: "PATCH",
+            body: JSON.stringify(expense),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            credentials: "include"
+        });
+
+        const data = await response.json().catch(() => null);
+
+
+        if (response.ok) {
+            return {
+                success: true,
+                data: data || null
+            };
+        }
+
+        return {
+            success: false,
+            message: t(`errors.${data.errorCode}`)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: t("errors.network")
+        };
+    }
+}
+
+/**
+ * @typedef { Object } result
+ * @property { boolean } success 
+ * @property { string } [message]
+ * @property { Income } [data] 
+ */
+/**
+ * 
+ * @param { string } incomeId 
+ * @param { Income } income
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string,
+ *  data: Income
+ *  }> } - Result object indicating whether the request was successful or not
+ */
+async function updateIncome(incomeId, income) {
+    try {
+        const response = await fetch(`${API_BASE}/income/${incomeId}`, {
+            method: "PATCH",
+            body: JSON.stringify(income),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            credentials: "include"
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (response.ok) {
+            return {
+                success: true,
+                data: data || null
+            };
+        }
+
+        return {
+            success: false,
+            message: t(`errors.${data.errorCode}`)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: t("errors.network")
+        };
+    }
+}
+
+/**
+ * Fetches the details of a specific income entry
+ * 
+ * @param { string } incomeId 
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string
+ *  }> } - Result object indicating whether the request was successful or not
+ */
+async function getIncomeDetails(incomeId) {
+    try {
+        const response = await fetch(`${API_BASE}/income/${incomeId}`, {
+            method: "GET",
+            credentials: "include"
+        });
+
+        const data = await response.json().catch(() => null);
+
         if (response.ok) {
             return {
                 success: true,
@@ -298,22 +538,48 @@ async function getUserIncomes() {
 
         return {
             success: false,
-            message: getErrorMessage(response, data, "Failed to load incomes.")
+            message: t(`errors.${data.errorCode}`)
         };
     } catch (error) {
         return {
             success: false,
-            message: "Network error"
+            message: t("errors.network")
         };
     }
 }
 
-function getErrorMessage(response, data, fallbackMessage) {
-    const messages = {
-        401: "Please log in to continue.",
-        409: "This action could not be completed due to a conflict. Please try again.",
-        500: "Server error. Please try again later."
-    };
+/**
+ * Fetches teh details of a specific expense entry
+ * @param { string } expenseId 
+ * @returns { Promise<{
+ *  success: boolean,
+ *  message: string
+ *  }> } - Result object indicating whether the request was successful or not
+ */
+async function getExpenseDetails(expenseId) {
+    try {
+        const response = await fetch(`${API_BASE}/expense/${expenseId}`, {
+            method: "GET",
+            credentials: "include"
+        });
 
-    return messages[response.status] || data?.message || fallbackMessage;
+        const data = await response.json().catch(() => null);
+
+        if (response.ok) {
+            return {
+                success: true,
+                data: data
+            };
+        }
+
+        return {
+            success: false,
+            message: t(`errors.${data.errorCode}`)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: t("errors.network")
+        };
+    }
 }

@@ -6,6 +6,6 @@ package de.ExpenseTracker.exceptions;
  */
 public class InvalidCredentialsException extends RuntimeException {
     public InvalidCredentialsException(ErrorCode code) {
-        super(code.getCode());
+        super(code.name());
     }
 }

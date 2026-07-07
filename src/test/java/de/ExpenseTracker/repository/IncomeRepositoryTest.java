@@ -26,12 +26,13 @@ public class IncomeRepositoryTest {
     private UserRepository userRepository;
 
     private Users savedUser;
+    private Income savedIncome;
 
 
     @BeforeEach
     void setUp() {
         savedUser = userRepository.save(createUser());
-        incomeRepository.save(createIncome());
+        savedIncome = incomeRepository.save(createIncome());
     }
 
     @Test
@@ -39,6 +40,15 @@ public class IncomeRepositoryTest {
         List<Income> income = incomeRepository.findByUser_Userid(savedUser.getUserid());
 
         assertIncome(income);
+    }
+
+    @Test
+    void shouldDeleteIncome() {
+        incomeRepository.deleteByUser_UseridAndIncomeId(savedUser.getUserid(), savedIncome.getIncomeId());
+
+        List<Income> remaining = incomeRepository.findByUser_Userid(savedUser.getUserid());
+
+        assertThat(remaining.isEmpty());
     }
 
     // helper methods
