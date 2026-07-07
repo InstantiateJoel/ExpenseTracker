@@ -45,5 +45,5 @@ async function handleSubmit(e) {
         return;
     }
 
-    finishAuth(username);
+    finishRegister(username, "register");
 }
