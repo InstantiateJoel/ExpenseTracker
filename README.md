@@ -1,4 +1,20 @@
-# Motivation for this project
+# Expense Tracker
 
-# Problems / learnings
-vorallem, warum 1 grosser commit auf "prod", warum das so gemacht _> altes projekt zerschossen, im ersten projekt unsicherheit wie fixen -> git lernen als konsequenz -> 1. projekt, alles selber gelernt, fehler okey, nächstes projekt anderst aufbauen
+Fullstack Expense Tracker Web App built with Spring Boot, PostgreSQL and vanilla JavaScript.
+
+---
+
+# Features
+- Create, edit and delete incomes and expenses
+- Categorize transactions
+
+---
+
+## Tech Stack
+- Backend: Spring Boot (Java)
+- Database: PostgreSQL
+- Frontend: HTML, CSS, JavaScript
+
+---
+
+# Run the Expense Tracker
