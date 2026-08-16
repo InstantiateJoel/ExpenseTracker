@@ -19,7 +19,7 @@ async function handleRegister(username, password, passwordConfirm) {
     return;
   }
 
-  finishAuth(username);
+  finishAuth(username, "register"); // temporary; remove when fixing session bug
 }
 
 /**
