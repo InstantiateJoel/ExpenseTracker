@@ -47,11 +47,11 @@ function finishAuth(username, type) {
   localStorage.setItem("username", username);
   showErrorMessage("");
 
-  //if (type === "register") {
+  if (type === "register") {
     // temporary: redirect until session handling is fixed
-    //window.location.replace("login.html");
-    //return;
-  //}
+    window.location.replace("login.html");
+    return;
+  }
 
   window.location.replace("entry.html");
 }
