@@ -13,11 +13,14 @@ async function handleRegister(username, password, passwordConfirm) {
 
   const result = await registerUser(username, password, passwordConfirm);
 
-
+  console.log("REGISTER RESULT: ", restult);
+  
   if (!result.success) {
     showErrorMessage(result.message);
     return;
   }
+
+  console.log("REGISTER SUCCESS -> REDIRECT");
 
   finishAuth(username, "register"); // temporary; remove when fixing session bug
 }
