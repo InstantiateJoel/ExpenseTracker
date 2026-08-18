@@ -12,14 +12,13 @@ async function handleRegister(username, password, passwordConfirm) {
   }
 
   const result = await registerUser(username, password, passwordConfirm);
-
-
+  
   if (!result.success) {
     showErrorMessage(result.message);
     return;
   }
 
-  finishAuth(username);
+  finishAuth(username, "register"); // temporary; remove when fixing session bug
 }
 
 /**

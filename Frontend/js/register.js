@@ -45,5 +45,5 @@ async function handleSubmit(e) {
         return;
     }
 
-    finishRegister(username, "register");
+    finishAuth(username, "register"); // remove, once session bug is fixed
 }
