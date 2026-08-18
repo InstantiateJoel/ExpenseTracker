@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 *.jar
 application-dev.properties
+docker-compose.test.yml
 
 ### STS ###
 .apt_generated
