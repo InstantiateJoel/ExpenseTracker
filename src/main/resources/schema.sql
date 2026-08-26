@@ -7,7 +7,7 @@ CREATE SCHEMA IF NOT EXISTS app AUTHORIZATION expensetracker_user;
 
 -- DROP TABLE app.users;
 
-CREATE TABLE app.users (
+CREATE TABLE IF NOT EXISTS app.users (
 	userid uuid NOT NULL,
 	username varchar(20) NOT NULL,
 	password_hash varchar(60) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE app.users (
 
 -- DROP TABLE app.category;
 
-CREATE TABLE app.category (
+CREATE TABLE IF NOT EXISTS app.category (
 	categoryid uuid DEFAULT gen_random_uuid() NOT NULL,
 	name varchar(100) NOT NULL,
 	parent_id uuid NULL,
@@ -34,7 +34,7 @@ CREATE TABLE app.category (
 
 -- DROP TABLE app.expense;
 
-CREATE TABLE app.expense (
+CREATE TABLE IF NOT EXISTS app.expense (
 	expenseid uuid DEFAULT gen_random_uuid() NOT NULL,
 	description varchar(250) NULL,
 	category_id uuid NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE app.expense (
 
 -- Drop TABLE app.expense
 
-CREATE TABLE app.income (
+CREATE TABLE IF NOT EXISTS app.income (
     incomeid uuid DEFAULT gen_random_uuid() NOT NULL,
     title varchar(255) NOT NULL,
     amount numeric(38, 2) NOT NULL,

@@ -41,17 +41,10 @@ async function handleLogin(username, password) {
 /**
  * Completes authentication and redirects user
  * @param {string} username
- * @param {"login"|"register"} type
  */
-function finishAuth(username, type) {
+function finishAuth(username) {
   localStorage.setItem("username", username);
   showErrorMessage("");
-
-  if (type === "register") {
-    // temporary: redirect until session handling is fixed
-    window.location.replace("login.html");
-    return;
-  }
 
   window.location.replace("entry.html");
 }

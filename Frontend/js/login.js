@@ -36,5 +36,5 @@ async function handleSubmit(e) {
     return;
   }
 
-  finishAuth(username, "login");
+  finishAuth(username);
 }

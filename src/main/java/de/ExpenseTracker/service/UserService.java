@@ -7,12 +7,17 @@ import de.ExpenseTracker.exceptions.UserAlreadyExistsException;
 import de.ExpenseTracker.exceptions.UserNotFoundException;
 import de.ExpenseTracker.model.Users;
 import de.ExpenseTracker.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -34,7 +39,7 @@ public class UserService {
      * @throws InvalidCredentialsException if the password and confirmation do not match
      *
      */
-    public Users register(RegisterUserData registerUserData) throws UserAlreadyExistsException {
+    public Users register(RegisterUserData registerUserData, HttpServletRequest request, HttpServletResponse response) throws UserAlreadyExistsException {
         if (checkUserExist(registerUserData.getUsername())) {
             throw new UserAlreadyExistsException(ErrorCode.USER_EXISTS);
         }
@@ -53,25 +58,43 @@ public class UserService {
 
         Users savedUser = userRepository.save(user);
 
-       Authentication authentication = authenticationManager.authenticate(
-               new UsernamePasswordAuthenticationToken(
-                       registerUserData.getUsername(),
-                       registerUserData.getPassword()
-               )
-       );
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        registerUserData.getUsername(),
+                        registerUserData.getPassword()
+                )
+        );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+
+        SecurityContextHolder.setContext(context);
+
+        HttpSession session = request.getSession(true);
+
+        System.out.println("SESSION ID: " + session.getId());
+
+        session.setAttribute(
+                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                context
+        );
+
+        System.out.println("SESSION ID: " + session.getId());
+        System.out.println("IS NEW: " + session.isNew());
+        System.out.println("COOKIE HEADER: " + response.getHeader("Set-Cookie"));
+
         return savedUser;
     }
 
     /**
      * Returns the current User from the session.
+     *
      * @return the User object
      * @throws UserNotFoundException when the auth object is null
      */
     public Users getCurrentUserFromSession() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth == null || !auth.isAuthenticated()) {
+        if (auth == null || !auth.isAuthenticated()) {
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
         String username = auth.getName();
