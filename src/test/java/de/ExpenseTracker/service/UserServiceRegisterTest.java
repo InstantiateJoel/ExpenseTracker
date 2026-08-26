@@ -4,6 +4,9 @@ import de.ExpenseTracker.dto.RegisterUserData;
 import de.ExpenseTracker.exceptions.UserAlreadyExistsException;
 import de.ExpenseTracker.model.Users;
 import de.ExpenseTracker.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +25,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceRegisterTest {
+
     @Mock
     private UserRepository userRepository;
 
@@ -30,6 +34,15 @@ public class UserServiceRegisterTest {
 
     @Mock
     private AuthenticationManager authenticationManager;
+
+    @Mock
+    private HttpServletRequest request;
+
+    @Mock
+    private HttpServletResponse response;
+
+    @Mock
+    private HttpSession session;
 
     @InjectMocks
     private UserService userService;
@@ -49,11 +62,19 @@ public class UserServiceRegisterTest {
         when(userRepository.existsByUsername(registerUserData.getUsername())).thenReturn(false);
         when(passwordEncoder.encode(registerUserData.getPassword())).thenReturn("hashedPassword");
 
-        when (userRepository.save(any(Users.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
+        when(userRepository.save(any(Users.class)))
+                .thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
+
         when(authenticationManager.authenticate(any()))
                 .thenReturn(mock(Authentication.class));
 
-        Users result = userService.register(registerUserData);
+        when(request.getSession(true)).thenReturn(session);
+
+        Users result = userService.register(
+                registerUserData,
+                request,
+                response
+        );
 
         assertThat(result.getUserid()).isNotNull();
         assertThat(result.getCreatedAt()).isNotNull();
@@ -62,14 +83,23 @@ public class UserServiceRegisterTest {
         assertEquals("hashedPassword", result.getPasswordHash());
 
         verify(userRepository, times(1)).save(any(Users.class));
-        verify(userRepository, times(1)).existsByUsername(registerUserData.getUsername());
+        verify(userRepository, times(1))
+                .existsByUsername(registerUserData.getUsername());
     }
 
     // negative test
     @Test
     void shouldThrowExceptionWhenUsernameAlreadyExists() {
         when(userRepository.existsByUsername(registerUserData.getUsername())).thenReturn(true);
-        assertThrows(UserAlreadyExistsException.class, () -> userService.register(registerUserData));
+
+        assertThrows(
+                UserAlreadyExistsException.class,
+                () -> userService.register(
+                        registerUserData,
+                        request,
+                        response
+                )
+        );
 
         verify(userRepository, never()).save(any(Users.class));
     }
