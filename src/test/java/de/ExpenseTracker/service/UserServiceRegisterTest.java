@@ -6,7 +6,6 @@ import de.ExpenseTracker.model.Users;
 import de.ExpenseTracker.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,11 +15,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,13 +37,13 @@ public class UserServiceRegisterTest {
     private AuthenticationManager authenticationManager;
 
     @Mock
+    private SecurityContextRepository securityContextRepository;
+
+    @Mock
     private HttpServletRequest request;
 
     @Mock
     private HttpServletResponse response;
-
-    @Mock
-    private HttpSession session;
 
     @InjectMocks
     private UserService userService;
@@ -59,16 +60,17 @@ public class UserServiceRegisterTest {
     // positive test
     @Test
     void shouldCreateUserSuccessfully() {
-        when(userRepository.existsByUsername(registerUserData.getUsername())).thenReturn(false);
-        when(passwordEncoder.encode(registerUserData.getPassword())).thenReturn("hashedPassword");
+        when(userRepository.existsByUsername(registerUserData.getUsername()))
+                .thenReturn(false);
+
+        when(passwordEncoder.encode(registerUserData.getPassword()))
+                .thenReturn("hashedPassword");
 
         when(userRepository.save(any(Users.class)))
                 .thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
 
         when(authenticationManager.authenticate(any()))
                 .thenReturn(mock(Authentication.class));
-
-        when(request.getSession(true)).thenReturn(session);
 
         Users result = userService.register(
                 registerUserData,
@@ -82,15 +84,24 @@ public class UserServiceRegisterTest {
         assertEquals("testuser", result.getUsername());
         assertEquals("hashedPassword", result.getPasswordHash());
 
-        verify(userRepository, times(1)).save(any(Users.class));
+        verify(userRepository, times(1))
+                .save(any(Users.class));
+
         verify(userRepository, times(1))
                 .existsByUsername(registerUserData.getUsername());
+
+        verify(authenticationManager, times(1))
+                .authenticate(any());
+
+        verify(securityContextRepository, times(1))
+                .saveContext(any(), eq(request), eq(response));
     }
 
     // negative test
     @Test
     void shouldThrowExceptionWhenUsernameAlreadyExists() {
-        when(userRepository.existsByUsername(registerUserData.getUsername())).thenReturn(true);
+        when(userRepository.existsByUsername(registerUserData.getUsername()))
+                .thenReturn(true);
 
         assertThrows(
                 UserAlreadyExistsException.class,
@@ -101,6 +112,10 @@ public class UserServiceRegisterTest {
                 )
         );
 
-        verify(userRepository, never()).save(any(Users.class));
+        verify(userRepository, never())
+                .save(any(Users.class));
+
+        verify(securityContextRepository, never())
+                .saveContext(any(), any(), any());
     }
 }
