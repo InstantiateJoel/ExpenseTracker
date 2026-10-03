@@ -236,6 +236,15 @@ function applyTranslations() {
     el.placeholder = value;
   });
 
-  document.getElementById("month").selectedIndex = 0;
-  document.getElementById("year").selectedIndex = 0;
+  const month = document.getElementById("month");
+  const year = document.getElementById("year");
+
+  if (month) {
+    month.selectedIndex = 0;
+  }
+
+  if (year) {
+    year.selectedIndex = 0;
+  }
+
 }

@@ -48,22 +48,12 @@ public class UserService {
             throw new InvalidCredentialsException(ErrorCode.PASSWORD_MISMATCH);
         }
 
-        Users user = Users.builder()
-                .userid(UUID.randomUUID())
-                .username(registerUserData.getUsername())
-                .passwordHash(passwordEncoder.encode(registerUserData.getPassword()))
-                .createdAt(Instant.now())
-                .build();
+        Users user = Users.builder().userid(UUID.randomUUID()).username(registerUserData.getUsername()).passwordHash(passwordEncoder.encode(registerUserData.getPassword())).createdAt(Instant.now()).build();
 
 
         Users savedUser = userRepository.save(user);
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        registerUserData.getUsername(),
-                        registerUserData.getPassword()
-                )
-        );
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registerUserData.getUsername(), registerUserData.getPassword()));
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authentication);
@@ -72,10 +62,7 @@ public class UserService {
 
         HttpSession session = request.getSession(true);
 
-        session.setAttribute(
-                HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                context
-        );
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
         return savedUser;
     }
@@ -93,8 +80,7 @@ public class UserService {
         }
         String username = auth.getName();
 
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     private boolean checkUserExist(String username) {

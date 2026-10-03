@@ -16,6 +16,7 @@ async function registerUser(username, password, passwordConfirm) {
     try {
         const response = await fetch(`${API_BASE}/users/register`, {
             method: "POST",
+            credentials: "include",
             body: JSON.stringify({
                 username: username,
                 password: password,
