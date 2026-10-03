@@ -287,7 +287,7 @@ async function addNewIncome(income) {
  */
 async function getUserExpenses() {
     try {
-        const response = await fetch(`${API_BASE}/expense`, {
+        const response = await fetch(`${API_BASE}/expense/all`, {
             method: "GET",
             credentials: "include"
         });
@@ -315,6 +315,98 @@ async function getUserExpenses() {
 }
 
 /**
+ * Retrieves the first expense a user added by payment date
+ * @returns { Promise<{
+    * success: boolean,
+    * message: string 
+    * }> }- Result object indicating whether the request was successful
+ */
+async function getFirstUserExpense() {
+    try {
+        const response = await fetch(`${API_BASE}/expense/first`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (response.ok) {
+            return {
+                success: true,
+                data: data
+            };
+        }
+
+        return {
+            success: false,
+            message: t(`errors.${data.errorCode}`)
+        };
+    } catch(error) {
+        return {
+            success: false,
+            message: t("errors.network")
+        };
+    }
+}
+
+async function getExpenseByYearAndMonth(year, month) {
+    try {
+        const response = await fetch(`${API_BASE}/expense/by-year-month?year=${year}&month=${month}`, {
+            method: "GET",
+            credentials: "include"
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (response.ok) {
+            return {
+                success: true,
+                data: data
+            }
+        }
+
+        return {
+            success: false,
+            message: t(`errors.${data.errorCode}`)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: t(`errors.network`)
+        };
+    }
+}
+
+
+async function getIncomeByYearAndMonth(year, month) {
+ try {
+        const response = await fetch(`${API_BASE}/income/by-year-month?year=${year}&month=${month}`, {
+            method: "GET",
+            credentials: "include"
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (response.ok) {
+            return {
+                success: true,
+                data: data
+            }
+        }
+
+        return {
+            success: false,
+            message: t(`errors.${data.errorCode}`)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: t(`errors.network`)
+        };
+    }
+}
+
+/**
  * API Call that returns all incomes for the current user
  * @returns { Promise<{
 *   success: boolean,
@@ -336,7 +428,7 @@ async function getUserIncomes() {
                 data: data
             };
         }
-        [message]
+
         return {
             success: false,
             message: t(`errors.${data.errorCode}`)

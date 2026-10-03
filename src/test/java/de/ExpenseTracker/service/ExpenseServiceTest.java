@@ -106,13 +106,75 @@ public class ExpenseServiceTest {
         assertThrows(CategoryNotFoundException.class, () -> expenseService.createNewExpense(createExpenseDto(categoryId)));
     }
 
+    @Test
+    void testShouldReturnFirstUserExpense() {
+        when(userService.getCurrentUserFromSession())
+                .thenReturn(user);
+
+        when(expenseRepository.findFirstExpenseByUser(user.getUserid()))
+                .thenReturn(Optional.of(expense));
+
+        when(expenseMapper.mapToDto(any(Expense.class)))
+                .thenAnswer(inv -> {
+                    Expense e = inv.getArgument(0);
+
+                    return ExpenseData.builder()
+                            .category(e.getCategory().getCategoryId())
+                            .description(e.getDescription())
+                            .amount(e.getAmount())
+                            .paymentDate(e.getPaymentDate())
+                            .build();
+                });
+
+        ExpenseData result = expenseService.getFirstUserExpense();
+
+        assertEquals(expense.getDescription(), result.getDescription());
+        assertEquals(expense.getCategory().getCategoryId(), result.getCategory());
+        assertEquals(expense.getAmount(), result.getAmount());
+        assertEquals(expense.getPaymentDate(), result.getPaymentDate());
+    }
+
+    @Test
+    void testShouldReturnExpenseByYearAndMonth() {
+        int year = LocalDate.now().getYear();
+        int month = LocalDate.now().getMonthValue();
+
+        when (userService.getCurrentUserFromSession())
+                .thenReturn(user);
+
+        when(expenseRepository.findByUser_UseridAndYearAndMonth(user.getUserid(), year, month))
+                .thenReturn(List.of(expense));
+
+        when(expenseMapper.mapToDto(any(Expense.class)))
+                .then(invocationOnMock -> {
+                    Expense e = invocationOnMock.getArgument(0);
+
+                    return ExpenseData.builder()
+                            .category(e.getCategory().getCategoryId())
+                            .description(e.getDescription())
+                            .amount(e.getAmount())
+                            .paymentDate(e.getPaymentDate())
+                            .build();
+                });
+
+        List<ExpenseData> result = expenseService.getExpensesForCurrentUserByMonthAndYear(year, month);
+
+        assertEquals(1, result.size());
+        ExpenseData dto = result.getFirst();
+
+        assertEquals(expense.getDescription(), dto.getDescription());
+        assertEquals(expense.getDescription(), dto.getDescription());
+        assertEquals(expense.getAmount(), dto.getAmount());
+        assertEquals(expense.getPaymentDate(), dto.getPaymentDate());
+    }
+
     // get expenses by userid
     @Test
     void shouldReturnAllUserExpenses() {
         when(userService.getCurrentUserFromSession())
                 .thenReturn(user);
 
-        when(expenseRepository.findByUser_Userid(user.getUserid()))
+        when(expenseRepository.findCurrentMonthExpensesByUser(user.getUserid()))
                 .thenReturn(List.of(expense));
 
         when(expenseMapper.mapToDto(any(Expense.class)))

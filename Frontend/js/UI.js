@@ -81,6 +81,7 @@ function renderUserExpenses(userExpenses) {
     return;
   }
 
+  transactionList.style.display = "";
   for (let i = 0; i < userExpenses.length; i++) {
     const expense = userExpenses[i];
 
@@ -124,7 +125,7 @@ function renderUserExpenses(userExpenses) {
     const updateBtn = document.createElement("button");
     updateBtn.textContent = t("ui.actions.update");
     updateBtn.addEventListener("click", () => {
-      window.location.replace(`edit?id=${expense.expenseId}&type=expense`);
+      window.location.replace(`edit.html?id=${expense.expenseId}&type=expense`);
     });
 
     actions.append(deleteBtn, updateBtn);
@@ -145,6 +146,8 @@ function renderUserIncomes(userIncomes) {
     transactionList.style.display = "none";
     return;
   }
+
+  transactionList.style.display = "";
 
   for (let i = 0; i < userIncomes.length; i++) {
     const income = userIncomes[i];
@@ -199,6 +202,22 @@ function renderUserIncomes(userIncomes) {
 }
 
 /**
+ * Adds year options to the year dropdown, starting from the given year (first expense) up to the current year
+ * 
+ * @param { number } year - The first year to add to the dropdown
+ */
+function renderYearDropdown(year) {
+
+  const todaysYear = new Date().getFullYear();
+  for (let i = year; i <= todaysYear; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.innerHTML = i;
+    yearDropdown.appendChild(option);
+  }
+}
+
+/**
  * Applies the translations to the DOM based on the data attributes.
  */
 function applyTranslations() {
@@ -216,4 +235,7 @@ function applyTranslations() {
 
     el.placeholder = value;
   });
+
+  document.getElementById("month").selectedIndex = 0;
+  document.getElementById("year").selectedIndex = 0;
 }

@@ -25,25 +25,25 @@ if (button) {
  * Delegates to login or register handler based on form type
  */
 async function handleSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-    const passwordConfirm = passwordConfirmInput.value;
+  const username = usernameInput.value;
+  const password = passwordInput.value;
+  const passwordConfirm = passwordConfirmInput.value;
 
-    const validPassword = validatePassword(password, passwordConfirm);
+  const validPassword = validatePassword(password, passwordConfirm);
 
-    if (!validPassword.valid) {
-        showErrorMessage(validPassword.message);
-        return
-    }
+  if (!validPassword.valid) {
+    showErrorMessage(validPassword.message);
+    return
+  }
 
-    const result = await registerUser(username, password, passwordConfirm);
+  const result = await registerUser(username, password, passwordConfirm);
 
-    if (!result.success) {
-        showErrorMessage(result.message);
-        return;
-    }
+  if (!result.success) {
+    showErrorMessage(result.message);
+    return;
+  }
 
-    finishAuth(username, "register"); // remove, once session bug is fixed
+  finishAuth(username);
 }

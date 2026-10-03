@@ -16,7 +16,7 @@ public class ExpenseMapper {
 
     public ExpenseData mapToDto(Expense expense) {
         Category sub = expense.getCategory();
-        Category main = sub.getParent();
+        Category main = sub.getParent() != null ? sub.getParent() : sub;
 
         CategoryData category = categoryService.getLocalizedCategory(expense.getCategory().getCategoryId());
 

@@ -72,16 +72,10 @@ public class UserService {
 
         HttpSession session = request.getSession(true);
 
-        System.out.println("SESSION ID: " + session.getId());
-
         session.setAttribute(
                 HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 context
         );
-
-        System.out.println("SESSION ID: " + session.getId());
-        System.out.println("IS NEW: " + session.isNew());
-        System.out.println("COOKIE HEADER: " + response.getHeader("Set-Cookie"));
 
         return savedUser;
     }

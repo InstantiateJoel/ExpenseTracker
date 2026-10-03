@@ -6,7 +6,6 @@ import de.ExpenseTracker.dto.ExpenseData;
 import de.ExpenseTracker.exceptions.ErrorCode;
 import de.ExpenseTracker.exceptions.UserNotFoundException;
 import de.ExpenseTracker.service.ExpenseService;
-import lombok.With;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +90,7 @@ public class ExpenseControllerTest {
         when(expenseService.getExpensesForCurrentUser())
                 .thenReturn(List.of(expenseData));
 
-        mockMvc.perform(get("/expense")
+        mockMvc.perform(get("/expense/all")
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].category").value(expenseData.getCategory().toString()))
@@ -149,5 +148,43 @@ public class ExpenseControllerTest {
                 .andExpect(jsonPath("$.amount").value(expenseData.getAmount()))
                 .andExpect(jsonPath("$.description").value(expenseData.getDescription()))
                 .andExpect(jsonPath("$.paymentDate").value(expenseData.getPaymentDate().toString()));
+    }
+
+    @Test
+    @WithMockUser(username = "joel")
+    public void testShouldRetrieveFirstExpense() throws Exception {
+        ExpenseData expenseData = createExpenseData();
+
+        when(expenseService.getFirstUserExpense())
+                .thenReturn(expenseData);
+
+        mockMvc.perform(get("/expense/first")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("category").value(expenseData.getCategory().toString()))
+                .andExpect(jsonPath("amount").value(12.4))
+                .andExpect(jsonPath("description").value("description"))
+                .andExpect(jsonPath("paymentDate").value(expenseData.getPaymentDate().toString()));
+    }
+
+    @Test
+    @WithMockUser(username = "joel")
+    public void testShouldRetrieveExpensesByYearAndMonth() throws Exception {
+        ExpenseData expenseData = createExpenseData();
+        int year = LocalDate.now().getYear();
+        int month = LocalDate.now().getMonthValue();
+
+        when(expenseService.getExpensesForCurrentUserByMonthAndYear(year, month))
+                .thenReturn(List.of(expenseData));
+
+        mockMvc.perform(get("/expense/by-year-month")
+                        .param("year", String.valueOf(year))
+                        .param("month", String.valueOf(month))
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].category").value(expenseData.getCategory().toString()))
+                .andExpect(jsonPath("$[0].amount").value(12.4))
+                .andExpect(jsonPath("$[0].description").value("description"))
+                .andExpect(jsonPath("$[0].paymentDate").value(expenseData.getPaymentDate().toString()));
     }
 }

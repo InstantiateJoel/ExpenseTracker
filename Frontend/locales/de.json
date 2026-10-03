@@ -54,6 +54,24 @@
     "header": {
       "title": "Willkommen!",
       "description": "Behalte deine Ausgaben und Einnahmen im Blick."
+    },
+    "date-picker": {
+      "year": "Jahr",
+      "month": "Monat"
+    },
+    "month": {
+      "january": "Januar",
+      "february": "Februar",
+      "march": "März",
+      "april": "April",
+      "may": "Mai",
+      "june": "Juni",
+      "july": "Juli",
+      "august": "August",
+      "september": "September",
+      "october": "Oktober",
+      "november": "November",
+      "december": "Dezember"
     }
   },
   "ui": {

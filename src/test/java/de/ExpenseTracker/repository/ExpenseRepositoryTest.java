@@ -1,5 +1,6 @@
 package de.ExpenseTracker.repository;
 
+import de.ExpenseTracker.dto.ExpenseData;
 import de.ExpenseTracker.model.Category;
 import de.ExpenseTracker.model.Expense;
 import de.ExpenseTracker.model.Users;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,12 +42,24 @@ public class ExpenseRepositoryTest {
         savedExpense = expenseRepository.save(createExpense());
     }
 
-
     @Test
     void testShouldReturnAllExpensesByUserId() {
-        List<Expense> expense = expenseRepository.findByUser_Userid(savedUser.getUserid());
+        List<Expense> expense = expenseRepository.findCurrentMonthExpensesByUser(savedUser.getUserid());
 
         assertExpense(expense);
+    }
+
+    @Test
+    void testShouldReturnFirstUserExpense() {
+        Optional<Expense> result = expenseRepository.findFirstExpenseByUser(savedUser.getUserid());
+
+            Expense expense = result.get();
+            assertThat(expense).isNotNull();
+            assertThat(expense.getDescription()).isEqualTo("This is a description");
+            assertThat(expense.getAmount()).isEqualTo(BigDecimal.valueOf(12.20));
+            assertThat(expense.getPaymentDate()).isNotNull();
+            assertThat(expense.getUser().getUserid()).isEqualTo(savedUser.getUserid());
+            assertThat(expense.getCategory().getCategoryId()).isEqualTo(savedCategory.getCategoryId());
     }
 
     @Test
@@ -59,9 +73,22 @@ public class ExpenseRepositoryTest {
     void testShouldDeleteExpense() {
         expenseRepository.deleteByUser_UseridAndExpenseId(savedUser.getUserid(), savedExpense.getExpenseId());
 
-        List<Expense> remaining = expenseRepository.findByUser_Userid(savedUser.getUserid());
+        List<Expense> remaining = expenseRepository.findCurrentMonthExpensesByUser(savedUser.getUserid());
 
         assertThat(remaining.isEmpty());
+    }
+
+    @Test
+    void testShouldReturnExpensesByYearAndMonth() {
+        int year = LocalDate.now().getYear();
+        int month = LocalDate.now().getMonthValue();
+        List<Expense> result = expenseRepository.findByUser_UseridAndYearAndMonth(savedUser.getUserid(), year, month);
+
+        assertThat(result).isNotEmpty();
+        assertThat(result)
+                .allMatch(expense ->
+                        expense.getPaymentDate().getYear() == year &&
+                        expense.getPaymentDate().getMonthValue() == month);
     }
 
     // helper methods

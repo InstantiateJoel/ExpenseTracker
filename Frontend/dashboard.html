@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="favicon.png">
+    <link rel="icon" href="favicon.png" />
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <title>Dashboard</title>
@@ -20,11 +20,42 @@
       </div>
 
       <div class="view-toggle">
-        <button id="show-expenses" data-i18n="ui.navigation.showExpenses"></button>
+        <button
+          id="show-expenses"
+          data-i18n="ui.navigation.showExpenses"
+        ></button>
         <button id="show-income" data-i18n="ui.navigation.showIncomes"></button>
       </div>
 
-      <div id="transaction-list">
+      <div class="date-picker">
+        <select id="month" name="Month">
+          <option value="" selected disabled data-i18n="dashboard.date-picker.month"></option>
+          <option value="1" data-i18n="dashboard.month.january"></option>
+          <option value="2" data-i18n="dashboard.month.february"></option>
+          <option value="3" data-i18n="dashboard.month.march"></option>
+          <option value="4" data-i18n="dashboard.month.april"></option>
+          <option value="5" data-i18n="dashboard.month.may"></option>
+          <option value="6" data-i18n="dashboard.month.june"></option>
+          <option value="7" data-i18n="dashboard.month.july"></option>
+          <option value="8" data-i18n="dashboard.month.august"></option>
+          <option value="9" data-i18n="dashboard.month.september"></option>
+          <option value="10" data-i18n="dashboard.month.october"></option>
+          <option value="11" data-i18n="dashboard.month.november"></option>
+          <option value="12" data-i18n="dashboard.month.december"></option>
+        </select>
+        <select id="year" name="Year">
+          <option
+            value=""
+            disabled
+            selected
+            data-i18n="dashboard.date-picker.year"
+          ></option>
+          <!--All the other options from year are going to be selected via the first expense
+          When the first expense is being made in 2014 -> The first year is 2014 and it goes until the
+          current year!-->
+        </select>
+      </div>
+      <div id="transaction-list"></div>
     </div>
     <script src="js/config.js"></script>
     <script src="js/config.local.js"></script>

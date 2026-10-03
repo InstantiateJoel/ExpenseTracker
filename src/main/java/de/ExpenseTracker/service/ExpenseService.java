@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -50,55 +51,23 @@ public class ExpenseService {
     }
 
     /**
-     * Retrieves all expenses for a given user
+     * Retrieves all expenses from the current year and month for a given user
      *
      * @return List of ExpenseData DTOs for all expenses created by this user
      */
     public List<ExpenseData> getExpensesForCurrentUser() {
         Users user = userService.getCurrentUserFromSession();
 
-        return expenseRepository.findByUser_Userid(user.getUserid())
+        return expenseRepository.findCurrentMonthExpensesByUser(user.getUserid())
                 .stream()
                 .map(expenseMapper::mapToDto)
                 .toList();
     }
 
-    /**
-     * Deletes a user expense by expenseId
-     * @param expenseId - The ID of the expense to delete
-     */
-    @Transactional
-    public void deleteExpense(UUID expenseId) {
+    public ExpenseData getFirstUserExpense() {
         Users user = userService.getCurrentUserFromSession();
 
-        expenseRepository.deleteByUser_UseridAndExpenseId(user.getUserid(), expenseId);
-    }
-
-    /**
-     * Updates a user expense by Expense ID
-     * @param expenseId - The ID of the expense to update
-     * @param expenseData - The expense data containing the fields to update
-     */
-    @Transactional
-    public void updateExpense(UUID expenseId, ExpenseData expenseData) {
-        Users user = userService.getCurrentUserFromSession();
-
-        Expense expense = expenseRepository
-                .findByUser_UseridAndExpenseId(user.getUserid(), expenseId)
-                    .orElseThrow(() -> new ExpenseNotFoundException(ErrorCode.EXPENSE_NOT_FOUND));
-
-        if (expenseData.getCategory() != null) {
-            expense.setCategory(categoryService.getCategoryByIdOrThrow(expenseData.getCategory()));
-        }
-        if(expenseData.getAmount() != null) {
-            expense.setAmount(expenseData.getAmount());
-        }
-        if(expenseData.getPaymentDate() != null) {
-            expense.setPaymentDate(expenseData.getPaymentDate());
-        }
-        if(expenseData.getDescription() != null) {
-            expense.setDescription(expenseData.getDescription());
-        }
+        return expenseMapper.mapToDto(Objects.requireNonNull(expenseRepository.findFirstExpenseByUser(user.getUserid()).orElse(null)));
     }
 
     /**
@@ -115,5 +84,54 @@ public class ExpenseService {
                 .orElseThrow(() -> new IncomeNotFoundException(ErrorCode.EXPENSE_NOT_FOUND));
 
         return expenseMapper.mapToDto(expense);
+    }
+
+    public List<ExpenseData> getExpensesForCurrentUserByMonthAndYear(int year, int month) {
+        Users user = userService.getCurrentUserFromSession();
+
+        return expenseRepository.findByUser_UseridAndYearAndMonth(user.getUserid(), year, month)
+                .stream()
+                .map(expenseMapper::mapToDto)
+                .toList();
+    }
+
+    /**
+     * Updates a user expense by Expense ID
+     *
+     * @param expenseId   - The ID of the expense to update
+     * @param expenseData - The expense data containing the fields to update
+     */
+    @Transactional
+    public void updateExpense(UUID expenseId, ExpenseData expenseData) {
+        Users user = userService.getCurrentUserFromSession();
+
+        Expense expense = expenseRepository
+                .findByUser_UseridAndExpenseId(user.getUserid(), expenseId)
+                .orElseThrow(() -> new ExpenseNotFoundException(ErrorCode.EXPENSE_NOT_FOUND));
+
+        if (expenseData.getCategory() != null) {
+            expense.setCategory(categoryService.getCategoryByIdOrThrow(expenseData.getCategory()));
+        }
+        if (expenseData.getAmount() != null) {
+            expense.setAmount(expenseData.getAmount());
+        }
+        if (expenseData.getPaymentDate() != null) {
+            expense.setPaymentDate(expenseData.getPaymentDate());
+        }
+        if (expenseData.getDescription() != null) {
+            expense.setDescription(expenseData.getDescription());
+        }
+    }
+
+    /**
+     * Deletes a user expense by expenseId
+     *
+     * @param expenseId - The ID of the expense to delete
+     */
+    @Transactional
+    public void deleteExpense(UUID expenseId) {
+        Users user = userService.getCurrentUserFromSession();
+
+        expenseRepository.deleteByUser_UseridAndExpenseId(user.getUserid(), expenseId);
     }
 }
