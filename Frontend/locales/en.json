@@ -14,6 +14,7 @@
       "submit": "Register"
     }
   },
+
   "entry": {
     "header": {
       "title": "New Transaction",
@@ -38,6 +39,20 @@
       }
     }
   },
+
+  "edit": {
+    "income": {
+      "form": {
+        "submit": "Save changes"
+      }
+    },
+    "expense": {
+      "form": {
+        "submit": "Save changes"
+      }
+    }
+  },
+
   "dashboard": {
     "header": {
       "title": "Welcome!",
@@ -45,7 +60,7 @@
     },
     "date-picker": {
       "year": "Year",
-      "month": "Year"
+      "month": "Month"
     },
     "month": {
       "january": "January",
@@ -62,6 +77,7 @@
       "december": "December"
     }
   },
+
   "ui": {
     "language": {
       "toggle": "Change language"
@@ -77,6 +93,7 @@
       "showIncomes": "Income"
     }
   },
+
   "errors": {
     "USER_NOT_FOUND": "User not found.",
     "USER_EXISTS": "Username already exists.",
@@ -84,7 +101,7 @@
     "CATEGORY_NOT_FOUND": "Category not found.",
     "INVALID_CREDENTIALS": "Invalid username or password.",
     "network": "Network error.",
-    "PASSWORD_LENGTH": "Password length must be at least 8 characters and at most 32 characters.",
+    "PASSWORD_LENGTH": "Password length must be at least 8 and at most 32 characters long.",
     "USERNAME_LENGTH": "Username must be at least 3 and at most 20 characters long.",
     "genericMessage": "Something went wrong."
   }
