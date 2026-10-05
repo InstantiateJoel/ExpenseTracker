@@ -125,7 +125,7 @@ function renderUserExpenses(userExpenses) {
     const updateBtn = document.createElement("button");
     updateBtn.textContent = t("ui.actions.update");
     updateBtn.addEventListener("click", () => {
-      window.location.replace(`edit.html?id=${expense.expenseId}&type=expense`);
+      window.location.replace(`edit?id=${expense.expenseId}&type=expense`);
     });
 
     actions.append(deleteBtn, updateBtn);
